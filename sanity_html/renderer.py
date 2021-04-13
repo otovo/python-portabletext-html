@@ -18,10 +18,31 @@ class SanityBlockRenderer:
         return result
 
     def _render_block(self, block):
-        block_tag = 'p'
-        result = f'<{block_tag}>'
-        for child in block.get('children', []):
-            if child.get('_type') == 'span':
-                result += html.escape(child['text'])
-        result += f'</{block_tag}>'
+        block_tag = "p"
+        result = f"<{block_tag}>"
+        children: list[dict] = block.get("children", [])
+
+        for idx, current_child in enumerate(children):
+            previous_child = children[idx - 1] if idx >= 1 else None
+            previous_marks = previous_child.get("marks", []) if previous_child else []
+
+            next_child = children[idx + 1] if idx < len(children) - 1 else None
+            next_marks = next_child.get("marks", []) if next_child else []
+
+            if current_child.get("_type") == "span":
+                marks: list[str] = current_child.get("marks", [])
+                for mark in marks:
+                    # The previous sibling opened the tag, so we don't need to
+                    # open a new one.
+                    if mark in previous_marks:
+                        continue
+                    result += f"<{mark}>"
+
+                result += html.escape(current_child["text"])
+                for mark in reversed(marks):
+                    if mark in next_marks:
+                        continue
+                    result += f"</{mark}>"
+
+        result += f"</{block_tag}>"
         return result
