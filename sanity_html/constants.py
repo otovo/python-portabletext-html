@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sanity_html.marker_definitions import (
+    render_code_marker,
     render_comment_marker,
     render_emphasis_marker,
     render_link_marker,
@@ -25,6 +26,7 @@ STYLE_MAP = {
 DECORATOR_MARKER_DEFINITIONS: Dict[str, Callable] = {
     'em': render_emphasis_marker,
     'strong': render_strong_marker,
+    'code': render_code_marker,
 }
 
 ANNOTATION_MARKER_DEFINITIONS: Dict[str, Callable] = {

@@ -11,6 +11,11 @@ def render_strong_marker(text: str) -> str:
     return f'<strong>{text}</strong>'
 
 
+def render_code_marker(text: str) -> str:
+    """Add code tags."""
+    return f'<code>{text}</code>'
+
+
 # Annotations
 
 
