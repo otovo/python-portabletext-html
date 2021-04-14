@@ -1,14 +1,21 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Callable
+
+
 # Decorators
 
 
-def render_emphasis_marker(text: str) -> str:
-    """Add emphasis tags."""
-    return f'<em>{text}</em>'
+def generate_decorator_marker_callable(tag: str) -> Callable:
+    """Return a callable."""
 
+    def inner(text: str) -> str:
+        return f'<{tag}>{text}</{tag}>'
 
-def render_strong_marker(text: str) -> str:
-    """Add strong tags."""
-    return f'<strong>{text}</strong>'
+    return inner
 
 
 # Annotations

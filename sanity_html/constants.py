@@ -2,12 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sanity_html.marker_definitions import (
-    render_comment_marker,
-    render_emphasis_marker,
-    render_link_marker,
-    render_strong_marker,
-)
+from sanity_html.marker_definitions import generate_decorator_marker_callable, render_comment_marker, render_link_marker
 
 if TYPE_CHECKING:
     from typing import Callable, Dict
@@ -23,8 +18,11 @@ STYLE_MAP = {
 }
 
 DECORATOR_MARKER_DEFINITIONS: Dict[str, Callable] = {
-    'em': render_emphasis_marker,
-    'strong': render_strong_marker,
+    'em': generate_decorator_marker_callable('em'),
+    'strong': generate_decorator_marker_callable('b'),
+    'code': generate_decorator_marker_callable('code'),
+    'underline': generate_decorator_marker_callable('u'),
+    'strike-through': generate_decorator_marker_callable('strike'),
 }
 
 ANNOTATION_MARKER_DEFINITIONS: Dict[str, Callable] = {
