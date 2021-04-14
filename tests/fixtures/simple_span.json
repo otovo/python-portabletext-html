@@ -1,16 +1,14 @@
-[
-  {
-    "_key": "73405dda68e7",
-    "_type": "block",
-    "children": [
-      {
-        "_key": "25a09c61d80a",
-        "_type": "span",
-        "marks": [],
-        "text": "Otovo guarantee is good"
-      }
-    ],
-    "markDefs": [],
-    "style": "normal"
-  }
-]
+{
+  "_key": "73405dda68e7",
+  "_type": "block",
+  "children": [
+    {
+      "_key": "25a09c61d80a",
+      "_type": "span",
+      "marks": [],
+      "text": "Otovo guarantee is good"
+    }
+  ],
+  "markDefs": [],
+  "style": "normal"
+}
