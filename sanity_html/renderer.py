@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 class SanityBlockRenderer:
-    """Convert block content to HTML."""
+    """HTML renderer for Sanity block content."""
 
     def __init__(self, blocks: list[dict]) -> None:
         self._blocks = blocks
@@ -137,3 +137,4 @@ def render(blocks: List[Dict]) -> str:
     """Shortcut function inspired by Sanity's own blocksToHtml.h callable."""
     renderer = SanityBlockRenderer(blocks)
     return renderer.render()
+  
