@@ -39,3 +39,9 @@ def test_multiple_adjecent_marks():
     fixture = load_fixture("multiple_adjecent_marks.json")
     output = SanityBlockRenderer.render(fixture)
     assert output == "<p><strong>A word of warning;</strong> Sanity is addictive.</p>"
+
+
+def test_nested_marks():
+    fixture = load_fixture("nested_marks.json")
+    output = SanityBlockRenderer.render(fixture)
+    assert output == "<p><strong>A word of <em>warning;</em></strong> Sanity is addictive.</p>"
