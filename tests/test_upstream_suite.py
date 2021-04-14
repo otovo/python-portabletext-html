@@ -14,6 +14,7 @@ def test_007_link_mark_def():
     assert expected_output == output
 
 
+@pytest.mark.skip('Requires custom definitions')
 def test_018_marks_all_the_way_dow():
     fixture_data = json.loads(
         (Path(__file__).parent / 'fixtures' / 'upstream' / '018-marks-all-the-way-down.json').read_text()

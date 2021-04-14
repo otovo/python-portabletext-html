@@ -5,10 +5,12 @@ from typing import TYPE_CHECKING
 from sanity_html.constants import ANNOTATION_MARKER_DEFINITIONS, DECORATOR_MARKER_DEFINITIONS
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from typing import Type
+
+    from sanity_html.marker_definitions import MarkerDefinition
 
 
-def get_marker_definitions(mark_defs: list[dict]) -> dict[str, Callable]:
+def get_marker_definitions(mark_defs: list[dict]) -> dict[str, Type[MarkerDefinition]]:
     """
     Convert JSON definitions to a map of marker definition renderers.
 

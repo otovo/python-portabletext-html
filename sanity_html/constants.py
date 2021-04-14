@@ -3,15 +3,17 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sanity_html.marker_definitions import (
-    render_code_marker,
-    render_comment_marker,
-    render_emphasis_marker,
-    render_link_marker,
-    render_strong_marker,
+    CodeMarkerDefinition,
+    CommentMarkerDefinition,
+    EmphasisMarkerDefinition,
+    LinkMarkerDefinition,
+    StrongMarkerDefinition,
 )
 
 if TYPE_CHECKING:
-    from typing import Callable, Dict
+    from typing import Dict, Type
+
+    from sanity_html.marker_definitions import MarkerDefinition
 
 STYLE_MAP = {
     'h1': 'h1',
@@ -23,13 +25,13 @@ STYLE_MAP = {
     'normal': 'p',
 }
 
-DECORATOR_MARKER_DEFINITIONS: Dict[str, Callable] = {
-    'em': render_emphasis_marker,
-    'strong': render_strong_marker,
-    'code': render_code_marker,
+DECORATOR_MARKER_DEFINITIONS: Dict[str, Type[MarkerDefinition]] = {
+    'em': EmphasisMarkerDefinition,
+    'strong': StrongMarkerDefinition,
+    'code': CodeMarkerDefinition,
 }
 
-ANNOTATION_MARKER_DEFINITIONS: Dict[str, Callable] = {
-    'link': render_link_marker,
-    'comment': render_comment_marker,
+ANNOTATION_MARKER_DEFINITIONS: Dict[str, Type[MarkerDefinition]] = {
+    'link': LinkMarkerDefinition,
+    'comment': CommentMarkerDefinition,
 }
