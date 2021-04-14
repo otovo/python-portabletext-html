@@ -45,6 +45,7 @@ class Block:
     children: list[dict] = field(default_factory=list)
     markDefs: list[dict] = field(default_factory=list)
     marker_definitions: dict[str, Type[MarkerDefinition]] = field(init=False)
+    marker_frequencies: dict[str, int] = field(init=False)
 
     def __post_init__(self) -> None:
         """
@@ -54,6 +55,17 @@ class Block:
         we can directly look up both annotation marks or decorator marks.
         """
         self.marker_definitions = get_marker_definitions(self.markDefs)
+        self.marker_frequencies = self._compute_marker_frequencies()
+
+    def _compute_marker_frequencies(self) -> dict[str, int]:
+        counts: dict[str, int] = {}
+        for child in self.children:
+            for mark in child.get('marks', []):
+                if mark in counts:
+                    counts[mark] += 1
+                else:
+                    counts[mark] = 0
+        return counts
 
     def get_node_siblings(self, node: Union[dict, Span]) -> Tuple[Optional[dict], Optional[dict]]:
         """Return the sibling nodes (prev, next) to the given node."""

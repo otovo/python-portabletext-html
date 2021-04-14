@@ -102,7 +102,8 @@ class SanityBlockRenderer:
         prev_marks = prev_node.get('marks', []) if prev_node else []
         next_marks = next_node.get('marks', []) if next_node else []
 
-        for mark in span.marks:
+        sorted_marks = sorted(span.marks, key=lambda x: -block.marker_frequencies[x])
+        for mark in sorted_marks:
             if mark in prev_marks:
                 continue
             marker_callable = block.marker_definitions[mark]()
@@ -110,7 +111,7 @@ class SanityBlockRenderer:
 
         result += html.escape(span.text)
 
-        for mark in reversed(span.marks):
+        for mark in reversed(sorted_marks):
             if mark in next_marks:
                 continue
 
