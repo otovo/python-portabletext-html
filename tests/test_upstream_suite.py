@@ -3,14 +3,14 @@ from pathlib import Path
 
 import pytest
 
-from sanity_html import SanityBlockRenderer
+from sanity_html import render
 
 
 def test_007_link_mark_def():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '007-link-mark-def.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -20,7 +20,7 @@ def test_018_marks_all_the_way_dow():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -28,7 +28,7 @@ def test_020_empty_array():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '020-empty-array.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -38,7 +38,7 @@ def test_011_basic_numbered_list():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -48,7 +48,7 @@ def test_010_basic_bullet_list():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -56,7 +56,7 @@ def test_002_single_spa():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '002-single-span.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -66,7 +66,7 @@ def test_009_messy_link_text():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -74,7 +74,7 @@ def test_003_multiple_spa():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '003-multiple-spans.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -84,7 +84,7 @@ def test_053_override_default_mark():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -94,7 +94,7 @@ def test_008_plain_header_block():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -102,7 +102,7 @@ def test_019_keyle():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '019-keyless.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -112,7 +112,7 @@ def test_005_basic_mark_multiple_adjacent_spa():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -120,7 +120,7 @@ def test_014_nested_list():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '014-nested-lists.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -130,7 +130,7 @@ def test_027_styled_list_item():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -140,7 +140,7 @@ def test_021_list_without_level():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -150,7 +150,7 @@ def test_013_materialized_image_support():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -160,7 +160,7 @@ def test_061_missing_mark_serializer():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -170,7 +170,7 @@ def test_051_override_default():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -178,7 +178,7 @@ def test_023_hard_break():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '023-hard-breaks.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -188,7 +188,7 @@ def test_016_deep_weird_list():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -198,7 +198,7 @@ def test_017_all_default_block_style():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -208,7 +208,7 @@ def test_004_basic_mark_single_spa():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -216,7 +216,7 @@ def test_022_inline_node():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '022-inline-nodes.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -225,7 +225,7 @@ def test_060_list_issue():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '060-list-issue.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -235,7 +235,7 @@ def test_025_image_with_hotspot():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -245,7 +245,7 @@ def test_050_custom_block_type():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -255,7 +255,7 @@ def test_015_all_basic_mark():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -263,7 +263,7 @@ def test_001_empty_block():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '001-empty-block.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -271,7 +271,7 @@ def test_024_inline_image():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '024-inline-images.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -281,7 +281,7 @@ def test_026_inline_block_with_text():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -289,7 +289,7 @@ def test_052_custom_mark():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '052-custom-marks.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -299,7 +299,7 @@ def test_006_basic_mark_nested_mark():
     )
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
 
 
@@ -307,5 +307,5 @@ def test_012_image_support():
     fixture_data = json.loads((Path(__file__).parent / 'fixtures' / 'upstream' / '012-image-support.json').read_text())
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
     expected_output = fixture_data['output']
-    output = SanityBlockRenderer.render(input_blocks)
+    output = render(input_blocks)
     assert expected_output == output
