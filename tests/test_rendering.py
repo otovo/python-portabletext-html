@@ -2,7 +2,7 @@ import html
 import json
 from pathlib import Path
 
-from sanity_html import SanityBlockRenderer
+from sanity_html.renderer import render
 
 
 def load_fixture(fixture_name) -> dict:
@@ -12,18 +12,18 @@ def load_fixture(fixture_name) -> dict:
 
 def test_simple_span():
     simple_span_def = load_fixture('simple_span.json')
-    output = SanityBlockRenderer.render(simple_span_def)
-    assert output == '<p>Otovo guarantee is good</p>'
+    output = render(simple_span_def)
+    assert output == '<p>Otovo guarantee is good</p>\n'
 
 
 def test_multiple_simple_spans_in_single_block():
     fixture = load_fixture('multiple_simple_spans.json')
-    output = SanityBlockRenderer.render(fixture)
-    assert output == '<p>Otovo guarantee is good for all</p>'
+    output = render(fixture)
+    assert output == '<p>Otovo guarantee is good for all</p>\n'
 
 
 def test_simple_xss_escaping():
     simple_span_def = load_fixture('simple_xss.json')
-    output = SanityBlockRenderer.render(simple_span_def)
+    output = render(simple_span_def)
     danger = html.escape('<script>alert(1)</script>')
-    assert output == f'<p>Otovo guarantee is {danger} good</p>'
+    assert output == f'<p>Otovo guarantee is {danger} good</p>\n'
