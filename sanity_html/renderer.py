@@ -8,7 +8,7 @@ from sanity_html.dataclasses import Block, Span
 from sanity_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
-    from typing import Dict, List, Optional
+    from typing import Dict, List, Optional, Union
 
 
 # TODO: Let user pass custom code block definitions/plugins
@@ -18,12 +18,21 @@ if TYPE_CHECKING:
 class SanityBlockRenderer:
     """HTML renderer for Sanity block content."""
 
-    def __init__(self, blocks: list[dict]) -> None:
-        self._blocks = blocks
+    def __init__(self, blocks: Union[list[dict], dict]) -> None:
+        self._wrapper_element: Optional[str] = None
+
+        if isinstance(blocks, dict):
+            self._blocks = [blocks]
+        elif isinstance(blocks, list):
+            self._blocks = blocks
+            self._wrapper_element = 'div'
 
     def render(self) -> str:
         """Render HTML from self._blocks."""
         rendered_html = ''
+        if not self._blocks:
+            return rendered_html
+
         list_nodes: List[Dict] = []
         for node in self._blocks:
 
@@ -37,7 +46,10 @@ class SanityBlockRenderer:
 
             rendered_html += self._render_node(node)  # render non-list nodes immediately
 
-        return rendered_html.strip()
+        rendered_html = rendered_html.strip()
+        if self._wrapper_element:
+            return f'<{self._wrapper_element}>{rendered_html}</{self._wrapper_element}>'
+        return rendered_html
 
     def _render_node(self, node: dict, context: Optional[Block] = None, list_item: bool = False) -> str:
         """
@@ -83,8 +95,8 @@ class SanityBlockRenderer:
     def _render_span(self, span: Span, block: Block) -> str:
         result: str = ''
         prev_node, next_node = block.get_node_siblings(span)
-        prev_marks = prev_node['marks'] if prev_node else []
-        next_marks = next_node['marks'] if next_node else []
+        prev_marks = prev_node.get('marks', []) if prev_node else []
+        next_marks = next_node.get('marks', []) if next_node else []
 
         for mark in span.marks:
             if mark in prev_marks:
