@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 from typing import TYPE_CHECKING
 
 from sanity_html.constants import STYLE_MAP
@@ -82,7 +83,7 @@ class SanityBlockRenderer:
         return text
 
     def _render_span(self, span: Span, block: Block) -> str:
-        text = span.text
+        text = html.escape(span.text)
 
         for mark in span.marks:
             marker_callable = block.marker_definitions[mark]
