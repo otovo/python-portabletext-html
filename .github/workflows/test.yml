@@ -53,7 +53,6 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
         if: steps.cache-venv.outputs.cache-hit != 'true'
-      - run: pip install flake8==${{ matrix.flake8-version }}
       - name: Install package
         run: poetry install --no-interaction
       - name: Run tests
