@@ -137,4 +137,3 @@ def render(blocks: List[Dict]) -> str:
     """Shortcut function inspired by Sanity's own blocksToHtml.h callable."""
     renderer = SanityBlockRenderer(blocks)
     return renderer.render()
-  
