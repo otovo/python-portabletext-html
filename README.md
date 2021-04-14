@@ -18,10 +18,14 @@
 
 > Repo is currently a work in progress. Not ready to be used.
 
-A python based HTML renderer for [Sanity's](https://www.sanity.io/) [Portable Text](https://github.com/portabletext/portabletext) format.
+HTML renderer for [Sanity's](https://www.sanity.io/) [Portable Text](https://github.com/portabletext/portabletext) format.
 
 Written as a python alternative to [Sanity's](https://www.sanity.io/) [block-content-to-html](https://www.npmjs.com/package/%40sanity/block-content-to-html) npm package,
 for when you don't have access to a JavaScript runtime.
+
+### TODO
+
+- [ ] Add support for image type
 
 ## Installation
 

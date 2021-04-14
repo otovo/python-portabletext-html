@@ -2,9 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-# Decorators
-
-
 if TYPE_CHECKING:
     from typing import Type
 
@@ -41,6 +38,9 @@ class MarkerDefinition:
         return result
 
 
+# Decorators
+
+
 class EmphasisMarkerDefinition(MarkerDefinition):
     """Marker definition for <em> rendering."""
 
@@ -62,13 +62,18 @@ class CodeMarkerDefinition(MarkerDefinition):
 class UnderlineMarkerDefinition(MarkerDefinition):
     """Marker definition for <u> rendering."""
 
-    tag = 'u'
+    tag = 'span'
+
+    @classmethod
+    def render_prefix(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
+        """Render the span with the appropriate style for underline."""
+        return '<span style="text-decoration:underline;">'
 
 
 class StrikeThroughMarkerDefinition(MarkerDefinition):
     """Marker definition for <strike> rendering."""
 
-    tag = 'strike'
+    tag = 'del'
 
 
 # Annotations
