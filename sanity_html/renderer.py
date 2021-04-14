@@ -23,21 +23,24 @@ class SanityBlockRenderer:
 
     def render(self) -> str:
         """Render HTML from self._blocks."""
-        rendered_html = ''
-        list_nodes: List[Dict] = []
+        result = ''
+        list_nodes: List[dict] = []
         for node in self._blocks:
 
             if list_nodes and not is_list(node):
-                rendered_html += self._render_list(list_nodes)
+                result += self._render_list(list_nodes)
                 list_nodes = []  # reset list_nodes
 
             if is_list(node):
                 list_nodes.append(node)
                 continue  # handle all elements ^ when the list ends
 
-            rendered_html += self._render_node(node)  # render non-list nodes immediately
+            result += self._render_node(node)  # render non-list nodes immediately
 
-        return rendered_html.strip()
+        if list_nodes:
+            result += self._render_list(list_nodes)
+
+        return result
 
     def _render_node(self, node: dict, context: Optional[Block] = None, list_item: bool = False) -> str:
         """
@@ -74,7 +77,7 @@ class SanityBlockRenderer:
 
             for child_node in block.children:
                 text += self._render_node(child_node, context=block)
-            text += f'</{tag}>\n'
+            text += f'</{tag}>'
         else:
             for child_node in block.children:
                 text += self._render_node(child_node, context=block)
