@@ -2,4 +2,4 @@
 
 from sanity_html.renderer import SanityBlockRenderer
 
-__all__ = ["SanityBlockRenderer"]
+__all__ = ['SanityBlockRenderer']
