@@ -2,7 +2,7 @@
     <img src="https://img.shields.io/pypi/v/python-sanity-html.svg" alt="Package version">
 </a>
 <a href="https://codecov.io/gh/otovo/python-sanity-html">
-    <img src="https://codecov.io/gh/otovo/python-sanity-html/branch/master/graph/badge.svg" alt="Code coverage">
+    <img src="https://codecov.io/gh/otovo/python-sanity-html/branch/main/graph/badge.svg" alt="Code coverage">
 </a>
 <a href="https://pypi.org/project/python-sanity-html/">
     <img src="https://github.com/otovo/python-sanity-html/actions/workflows/test.yml/badge.svg" alt="Test status">
@@ -45,4 +45,4 @@ output = renderer.render()
 
 Contributions are always appreciated 👏
 
-For details, see the [CONTRIBUTING.md](https://github.com/otovo/python-sanity-html/blob/master/CONTRIBUTING.md). 
+For details, see the [CONTRIBUTING.md](https://github.com/otovo/python-sanity-html/blob/main/CONTRIBUTING.md).
