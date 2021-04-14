@@ -53,10 +53,8 @@ class SanityBlockRenderer:
 
         elif is_span(node):
             if isinstance(node, str):
-                # I'm not 100% sure if this code path is possible, but the sanity lib checks for string type
-                # https://github.com/sanity-io/block-content-to-hyperscript/blob/master/src/blocksToNodes.js#L114
-                # so I would imagine it is
-                # TODO: Remove if we can't justify this condition
+                # TODO: Remove if we there's no coverage for this after we've fixed tests
+                #  not convinced this code path is possible - put it in because the sanity lib checks for it
                 span = Span(**{'text': node})
             else:
                 span = Span(**node)
@@ -99,49 +97,46 @@ class SanityBlockRenderer:
         for mark in reversed(span.marks):
             if mark in next_marks:
                 continue
+
             marker_callable = block.marker_definitions[mark]()
             result += marker_callable.render_suffix(span, mark, block)
 
         return result
 
     def _render_list(self, nodes: list) -> str:
-        html = ''
-        tag_dict = {}
+        result, tag_dict = '', {}
         for index, node in enumerate(nodes):
 
-            current_level = node['level']
-            prev_level = nodes[index - 1]['level'] if index > 0 else None
+            current_level = node['level']  # 1
+            prev_level = nodes[index - 1]['level'] if index > 0 else 0  # default triggers first condition below
 
-            list_item = node.pop('listItem')  # this lets us call render_node for non-list handling
-            list_tags = get_list_tags(list_item)
+            list_item = node.pop('listItem')  # popping this attribute lets us call render_node for non-list handling
             node_inner_html = '<li>' + ''.join(list(self._render_node(node, list_item=True))) + '</li>'
 
-            if not html:  # first item
-                html += list_tags[0]
-                tag_dict[current_level] = list_tags[1]  # add closing tag to the map which should be empty at the end
-                html += node_inner_html
-                continue
-
-            if current_level == prev_level:
-                html += node_inner_html
-                continue
-
             if current_level > prev_level:
-                html += list_tags[0]
-                tag_dict[current_level] = list_tags[1]  # add closing tag to the map which should be empty at the end
-                html += node_inner_html
+                list_tags = get_list_tags(list_item)
+                result += list_tags[0]
+                result += node_inner_html
+                tag_dict[current_level] = list_tags[1]
                 continue
 
-            if current_level < prev_level:
-                html += tag_dict.pop(prev_level)  # time to close tags
-                html += node_inner_html
+            elif current_level == prev_level:
+                result += node_inner_html
                 continue
 
-        # make sure to close off the last tag
-        html += tag_dict.pop(list(tag_dict.keys())[0])
+            elif current_level < prev_level:
+                result += node_inner_html
+                result += tag_dict.pop(prev_level)
+                continue
 
-        assert tag_dict == {}
-        return html
+            else:
+                print('Unexpected code path 🕵🏻‍')  # noqa: T001 # TODO: Remove or alter when done testing
+
+        # there should be one or more tag in the dict for us to close off
+        for value in tag_dict.values():
+            result += value
+
+        return result
 
 
 def render(blocks: List[Dict]) -> str:

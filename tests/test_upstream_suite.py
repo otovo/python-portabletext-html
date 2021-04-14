@@ -75,6 +75,9 @@ def test_008_plain_header_block():
     assert output == expected_output
 
 
+# Fails because of mark ordering
+# expected: <strong><em>app</strong> or website</a></em>.</blockquote>
+# output:   <em><strong>app</strong> or website</em></a>.</blockquote>
 def test_009_messy_link_text():
     fixture_data = get_text('fixtures/upstream/009-messy-link-text.json')
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
@@ -86,7 +89,6 @@ def test_009_messy_link_text():
 def test_010_basic_bullet_list():
     fixture_data = get_text('fixtures/upstream/010-basic-bullet-list.json')
     input_blocks = [fixture_data['input']] if type(fixture_data['input']) == dict else fixture_data['input']
-    print(input_blocks)
     expected_output = fixture_data['output']
     output = render(input_blocks)
     assert output == expected_output
