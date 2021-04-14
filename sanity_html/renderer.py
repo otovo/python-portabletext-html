@@ -38,7 +38,7 @@ class SanityBlockRenderer:
 
             rendered_html += self._render_node(node)  # render non-list nodes immediately
 
-        return rendered_html
+        return rendered_html.strip()
 
     def _render_node(self, node: dict, context: Optional[Block] = None, list_item: bool = False) -> str:
         """

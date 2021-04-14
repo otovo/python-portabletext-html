@@ -13,20 +13,20 @@ def load_fixture(fixture_name) -> dict:
 def test_simple_span():
     simple_span_def = load_fixture('simple_span.json')
     output = render(simple_span_def)
-    assert output == '<p>Otovo guarantee is good</p>\n'
+    assert output == '<p>Otovo guarantee is good</p>'
 
 
 def test_multiple_simple_spans_in_single_block():
     fixture = load_fixture('multiple_simple_spans.json')
     output = render(fixture)
-    assert output == '<p>Otovo guarantee is good for all</p>\n'
+    assert output == '<p>Otovo guarantee is good for all</p>'
 
 
 def test_simple_xss_escaping():
     simple_span_def = load_fixture('simple_xss.json')
     output = render(simple_span_def)
     danger = html.escape('<script>alert(1)</script>')
-    assert output == f'<p>Otovo guarantee is {danger} good</p>\n'
+    assert output == f'<p>Otovo guarantee is {danger} good</p>'
 
 
 def test_basic_mark():
