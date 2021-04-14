@@ -59,6 +59,18 @@ class CodeMarkerDefinition(MarkerDefinition):
     tag = 'code'
 
 
+class UnderlineMarkerDefinition(MarkerDefinition):
+    """Marker definition for <u> rendering."""
+
+    tag = 'u'
+
+
+class StrikeThroughMarkerDefinition(MarkerDefinition):
+    """Marker definition for <strike> rendering."""
+
+    tag = 'strike'
+
+
 # Annotations
 
 

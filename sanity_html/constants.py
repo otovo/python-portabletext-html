@@ -7,7 +7,9 @@ from sanity_html.marker_definitions import (
     CommentMarkerDefinition,
     EmphasisMarkerDefinition,
     LinkMarkerDefinition,
+    StrikeThroughMarkerDefinition,
     StrongMarkerDefinition,
+    UnderlineMarkerDefinition,
 )
 
 if TYPE_CHECKING:
@@ -29,6 +31,8 @@ DECORATOR_MARKER_DEFINITIONS: Dict[str, Type[MarkerDefinition]] = {
     'em': EmphasisMarkerDefinition,
     'strong': StrongMarkerDefinition,
     'code': CodeMarkerDefinition,
+    'underline': UnderlineMarkerDefinition,
+    'strike-through': StrikeThroughMarkerDefinition,
 }
 
 ANNOTATION_MARKER_DEFINITIONS: Dict[str, Type[MarkerDefinition]] = {
