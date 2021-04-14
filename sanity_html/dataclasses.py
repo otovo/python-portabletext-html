@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from sanity_html.utils import get_marker_definitions
 
 if TYPE_CHECKING:
-    from typing import Callable, Literal, Optional
+    from typing import Literal, Optional, Tuple, Type, Union
 
+    from sanity_html.marker_definitions import MarkerDefinition
     from sanity_html.types import SanityIdType
 
 
@@ -43,7 +44,7 @@ class Block:
     listItem: Optional[Literal['bullet', 'number', 'square']] = None
     children: list[dict] = field(default_factory=list)
     markDefs: list[dict] = field(default_factory=list)
-    marker_definitions: dict[str, Callable] = field(init=False)
+    marker_definitions: dict[str, Type[MarkerDefinition]] = field(init=False)
 
     def __post_init__(self) -> None:
         """
@@ -53,3 +54,27 @@ class Block:
         we can directly look up both annotation marks or decorator marks.
         """
         self.marker_definitions = get_marker_definitions(self.markDefs)
+
+    def get_node_siblings(self, node: Union[dict, Span]) -> Tuple[Optional[dict], Optional[dict]]:
+        """Return the sibling nodes (prev, next) to the given node."""
+        if not self.children:
+            return (None, None)
+        try:
+            if type(node) == dict:
+                node = cast(dict, node)
+                node_idx = self.children.index(node)
+            elif type(node) == Span:
+                node = cast(Span, node)
+                node_idx = self.children.index(next((c for c in self.children if c.get('_key') == node._key), {}))
+        except ValueError:
+            return (None, None)
+
+        prev_node = None
+        next_node = None
+
+        if node_idx >= 1:
+            prev_node = self.children[node_idx - 1]
+        if node_idx < len(self.children) - 2:
+            next_node = self.children[node_idx + 1]
+
+        return (prev_node, next_node)

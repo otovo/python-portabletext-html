@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 
 from sanity_html.constants import STYLE_MAP
 from sanity_html.dataclasses import Block, Span
-from sanity_html.marker_definitions import render_link_marker
 from sanity_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
@@ -74,6 +73,7 @@ class SanityBlockRenderer:
         if not list_item:
             tag = STYLE_MAP[block.style]
             text += f'<{tag}>'
+
             for child_node in block.children:
                 text += self._render_node(child_node, context=block)
             text += f'</{tag}>\n'
@@ -83,16 +83,26 @@ class SanityBlockRenderer:
         return text
 
     def _render_span(self, span: Span, block: Block) -> str:
-        text = html.escape(span.text)
+        result: str = ''
+        prev_node, next_node = block.get_node_siblings(span)
+        prev_marks = prev_node['marks'] if prev_node else []
+        next_marks = next_node['marks'] if next_node else []
 
         for mark in span.marks:
-            marker_callable = block.marker_definitions[mark]
-            if marker_callable == render_link_marker:
-                text = marker_callable(text=text, href=block.marker_definitions[span.marks[0]])
-            else:
-                text = marker_callable(text=text)
+            if mark in prev_marks:
+                continue
+            marker_callable = block.marker_definitions[mark]()
+            result += marker_callable.render_prefix(span, mark, block)
 
-        return text
+        result += html.escape(span.text)
+
+        for mark in reversed(span.marks):
+            if mark in next_marks:
+                continue
+            marker_callable = block.marker_definitions[mark]()
+            result += marker_callable.render_suffix(span, mark, block)
+
+        return result
 
     def _render_list(self, nodes: list) -> str:
         html = ''
