@@ -55,6 +55,7 @@ line_length = 120
 
 [tool.pytest.ini_options]
 addopts = ['--cov=sanity_html','--cov-report', 'term-missing']
+markers = ["unsupported"]
 
 [tool.coverage.run]
 source = ['sanity_html/*']

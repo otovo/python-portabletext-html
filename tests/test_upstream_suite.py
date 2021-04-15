@@ -102,6 +102,7 @@ def test_011_basic_numbered_list():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_012_image_support():
     fixture_data = get_fixture('fixtures/upstream/012-image-support.json')
     input_blocks = fixture_data['input']
@@ -110,6 +111,7 @@ def test_012_image_support():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_013_materialized_image_support():
     fixture_data = get_fixture('fixtures/upstream/013-materialized-image-support.json')
     input_blocks = fixture_data['input']
@@ -150,7 +152,7 @@ def test_017_all_default_block_style():
     assert output == expected_output
 
 
-@pytest.mark.skip('Requires custom definitions')
+@pytest.mark.unsupported
 def test_018_marks_all_the_way_dow():
     fixture_data = get_fixture('fixtures/upstream/018-marks-all-the-way-down.json')
     input_blocks = fixture_data['input']
@@ -199,6 +201,7 @@ def test_023_hard_break():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_024_inline_image():
     fixture_data = get_fixture('fixtures/upstream/024-inline-images.json')
     input_blocks = fixture_data['input']
@@ -207,6 +210,7 @@ def test_024_inline_image():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_025_image_with_hotspot():
     fixture_data = get_fixture('fixtures/upstream/025-image-with-hotspot.json')
     input_blocks = fixture_data['input']
@@ -231,6 +235,7 @@ def test_027_styled_list_item():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_050_custom_block_type():
     fixture_data = get_fixture('fixtures/upstream/050-custom-block-type.json')
     input_blocks = fixture_data['input']
@@ -239,6 +244,7 @@ def test_050_custom_block_type():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_051_override_default():
     fixture_data = get_fixture('fixtures/upstream/051-override-defaults.json')
     input_blocks = fixture_data['input']
@@ -247,6 +253,7 @@ def test_051_override_default():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_052_custom_mark():
     fixture_data = get_fixture('fixtures/upstream/052-custom-marks.json')
     input_blocks = fixture_data['input']
@@ -255,6 +262,7 @@ def test_052_custom_mark():
     assert output == expected_output
 
 
+@pytest.mark.unsupported
 def test_053_override_default_mark():
     fixture_data = get_fixture('fixtures/upstream/053-override-default-marks.json')
     input_blocks = fixture_data['input']
