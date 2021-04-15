@@ -110,7 +110,7 @@ class SanityBlockRenderer:
             marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
             result += marker_callable.render_prefix(span, mark, block)
 
-        result += html.escape(span.text)
+        result += html.escape(span.text).replace('\n', '<br/>')
 
         for mark in reversed(sorted_marks):
             if mark in next_marks:
