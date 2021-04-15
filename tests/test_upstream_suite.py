@@ -7,7 +7,7 @@ import pytest
 
 from sanity_html import render
 from sanity_html.dataclasses import Block
-from sanity_html.marker_definitions import MarkerDefinition
+from sanity_html.marker_definitions import LinkMarkerDefinition, MarkerDefinition
 from sanity_html.renderer import SanityBlockRenderer
 
 
@@ -304,12 +304,19 @@ def test_052_custom_mark():
     assert output == expected_output
 
 
-@pytest.mark.unsupported
 def test_053_override_default_mark():
     fixture_data = get_fixture('fixtures/upstream/053-override-default-marks.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+
+    class CustomLinkMark(LinkMarkerDefinition):
+        @classmethod
+        def render_prefix(cls, span, marker, context) -> str:
+            result = super().render_prefix(span, marker, context)
+            return result.replace('<a href', '<a class=\"mahlink\" href')
+
+    sbr = SanityBlockRenderer(input_blocks, custom_marker_definitions={'mark1': CustomLinkMark})
+    output = sbr.render()
     assert output == expected_output
 
 
