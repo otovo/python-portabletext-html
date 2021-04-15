@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from sanity_html.marker_definitions import MarkerDefinition
 
 
-def get_marker_definitions(mark_defs: list[dict]) -> dict[str, Type[MarkerDefinition]]:
+def get_default_marker_definitions(mark_defs: list[dict]) -> dict[str, Type[MarkerDefinition]]:
     """
     Convert JSON definitions to a map of marker definition renderers.
 

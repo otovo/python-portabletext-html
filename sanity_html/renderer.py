@@ -9,7 +9,9 @@ from sanity_html.marker_definitions import DefaultMarkerDefinition
 from sanity_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
-    from typing import Dict, List, Optional, Union
+    from typing import Callable, Dict, List, Optional, Type, Union
+
+    from sanity_html.marker_definitions import MarkerDefinition
 
 
 # TODO: Let user pass custom code block definitions/plugins
@@ -19,8 +21,15 @@ if TYPE_CHECKING:
 class SanityBlockRenderer:
     """HTML renderer for Sanity block content."""
 
-    def __init__(self, blocks: Union[list[dict], dict]) -> None:
+    def __init__(
+        self,
+        blocks: Union[list[dict], dict],
+        custom_marker_definitions: dict[str, Type[MarkerDefinition]] = None,
+        custom_serializers: dict[str, Callable[[dict, Optional[Block], bool], str]] = None,
+    ) -> None:
         self._wrapper_element: Optional[str] = None
+        self._custom_marker_definitions = custom_marker_definitions or {}
+        self._custom_serializers = custom_serializers or {}
 
         if isinstance(blocks, dict):
             self._blocks = [blocks]
@@ -65,7 +74,7 @@ class SanityBlockRenderer:
         :param list_item: Whether we are handling a list upstream (impacts block handling).
         """
         if is_block(node):
-            block = Block(**node)
+            block = Block(**node, marker_definitions=self._custom_marker_definitions)
             return self._render_block(block, list_item=list_item)
 
         elif is_span(node):
@@ -78,7 +87,8 @@ class SanityBlockRenderer:
 
             assert context  # this should be a cast
             return self._render_span(span, block=context)  # context is span's outer block
-
+        elif custom_serializer := self._custom_serializers.get(node.get('_type', '')):
+            return custom_serializer(node, context, list_item)
         else:
             print('Unexpected code path 👺')  # noqa: T001 # TODO: Remove after thorough testing
             return ''
