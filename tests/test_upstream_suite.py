@@ -1,9 +1,50 @@
 import json
+import re
 from pathlib import Path
+from typing import Optional
 
 import pytest
 
 from sanity_html import render
+from sanity_html.dataclasses import Block
+from sanity_html.marker_definitions import MarkerDefinition
+from sanity_html.renderer import SanityBlockRenderer
+
+
+def fake_image_serializer(node: dict, context: Optional[Block], list_item: bool):
+    assert node['_type'] == 'image'
+    if 'url' in node['asset']:
+        image_url = node['asset']['url']
+    else:
+        project_id = '3do82whm'
+        dataset = 'production'
+        asset_ref: str = node['asset']['_ref']
+        image_path = asset_ref[6:].replace('-jpg', '.jpg').replace('-png', '.png')
+        image_url = f'https://cdn.sanity.io/images/{project_id}/{dataset}/{image_path}'
+
+    if 'crop' in node and 'hotspot' in node:
+        crop = node['crop']
+        hotspot = node['hotspot']
+        size_match = re.match(r'.*-(\d+)x(\d+)\..*', image_url)
+        if size_match:
+            orig_width, orig_height = [int(x) for x in size_match.groups()]
+            rect_x1 = round((orig_width * hotspot['x']) - ((orig_width * hotspot['width']) / 2))
+            rect_y1 = round((orig_height * hotspot['y']) - ((orig_height * hotspot['height']) / 2))
+            rect_x2 = round(orig_width - (orig_width * crop['left']) - (orig_width * crop['right']))
+            rect_y2 = round(orig_height - (orig_height * crop['top']) - (orig_height * crop['bottom']))
+            # These are passed as "imageOptions" upstream.
+            # It's up the the implementor of the serializer to fix this.
+            # We might provide one for images that does something like this, but for now
+            # let's just make the test suite pass
+            width = 320
+            height = 240
+
+            image_url += f'?rect={rect_x1},{rect_y1},{rect_x2},{rect_y2}&amp;w={width}&amp;h={height}'
+
+    image = f'<img src="{image_url}"/>'
+    if context:
+        return image
+    return f'<figure>{image}</figure>'
 
 
 def get_fixture(rel_path) -> dict:
@@ -102,21 +143,21 @@ def test_011_basic_numbered_list():
     assert output == expected_output
 
 
-@pytest.mark.unsupported
 def test_012_image_support():
     fixture_data = get_fixture('fixtures/upstream/012-image-support.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    output = sbr.render()
     assert output == expected_output
 
 
-@pytest.mark.unsupported
 def test_013_materialized_image_support():
     fixture_data = get_fixture('fixtures/upstream/013-materialized-image-support.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    output = sbr.render()
     assert output == expected_output
 
 
@@ -189,7 +230,8 @@ def test_022_inline_node():
     fixture_data = get_fixture('fixtures/upstream/022-inline-nodes.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    output = sbr.render()
     assert output == expected_output
 
 
@@ -201,21 +243,21 @@ def test_023_hard_break():
     assert output == expected_output
 
 
-@pytest.mark.unsupported
 def test_024_inline_image():
     fixture_data = get_fixture('fixtures/upstream/024-inline-images.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    output = sbr.render()
     assert output == expected_output
 
 
-@pytest.mark.unsupported
 def test_025_image_with_hotspot():
     fixture_data = get_fixture('fixtures/upstream/025-image-with-hotspot.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    output = sbr.render()
     assert output == expected_output
 
 
