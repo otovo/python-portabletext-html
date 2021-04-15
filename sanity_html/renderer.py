@@ -26,7 +26,7 @@ class SanityBlockRenderer:
             self._blocks = [blocks]
         elif isinstance(blocks, list):
             self._blocks = blocks
-            self._wrapper_element = 'div'
+            self._wrapper_element = 'div' if len(blocks) > 1 else ''
 
     def render(self) -> str:
         """Render HTML from self._blocks."""
