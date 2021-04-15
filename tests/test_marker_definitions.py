@@ -29,14 +29,17 @@ def test_render_underline_marker_success():
     for text in sample_texts:
         node = Span(_type='span', text=text)
         block = Block(_type='block', children=[node.__dict__])
-        assert UnderlineMarkerDefinition.render(node, 'u', block) == f'<u>{text}</u>'
+        assert (
+            UnderlineMarkerDefinition.render(node, 'u', block)
+            == f'<span style="text-decoration:underline;">{text}</span>'
+        )
 
 
 def test_render_strikethrough_marker_success():
     for text in sample_texts:
         node = Span(_type='span', text=text)
         block = Block(_type='block', children=[node.__dict__])
-        assert StrikeThroughMarkerDefinition.render(node, 'strike', block) == f'<strike>{text}</strike>'
+        assert StrikeThroughMarkerDefinition.render(node, 'strike', block) == f'<del>{text}</del>'
 
 
 def test_render_link_marker_success():
