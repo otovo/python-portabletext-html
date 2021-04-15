@@ -41,6 +41,12 @@ class MarkerDefinition:
 # Decorators
 
 
+class DefaultMarkerDefinition(MarkerDefinition):
+    """Marker used for unknown definitions."""
+
+    tag = 'span'
+
+
 class EmphasisMarkerDefinition(MarkerDefinition):
     """Marker definition for <em> rendering."""
 

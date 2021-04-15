@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from sanity_html.constants import STYLE_MAP
 from sanity_html.dataclasses import Block, Span
+from sanity_html.marker_definitions import DefaultMarkerDefinition
 from sanity_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
@@ -106,7 +107,7 @@ class SanityBlockRenderer:
         for mark in sorted_marks:
             if mark in prev_marks:
                 continue
-            marker_callable = block.marker_definitions[mark]()
+            marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
             result += marker_callable.render_prefix(span, mark, block)
 
         result += html.escape(span.text)
@@ -114,8 +115,7 @@ class SanityBlockRenderer:
         for mark in reversed(sorted_marks):
             if mark in next_marks:
                 continue
-
-            marker_callable = block.marker_definitions[mark]()
+            marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
             result += marker_callable.render_suffix(span, mark, block)
 
         return result
