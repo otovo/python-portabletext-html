@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, cast
 
-from sanity_html.utils import get_marker_definitions
+from sanity_html.utils import get_default_marker_definitions
 
 if TYPE_CHECKING:
     from typing import Literal, Optional, Tuple, Type, Union
@@ -44,7 +44,7 @@ class Block:
     listItem: Optional[Literal['bullet', 'number', 'square']] = None
     children: list[dict] = field(default_factory=list)
     markDefs: list[dict] = field(default_factory=list)
-    marker_definitions: dict[str, Type[MarkerDefinition]] = field(init=False)
+    marker_definitions: dict[str, Type[MarkerDefinition]] = field(default_factory=dict)
     marker_frequencies: dict[str, int] = field(init=False)
 
     def __post_init__(self) -> None:
@@ -54,7 +54,9 @@ class Block:
         To make handling of span `marks` simpler, we define marker_definitions as a dict, from which
         we can directly look up both annotation marks or decorator marks.
         """
-        self.marker_definitions = get_marker_definitions(self.markDefs)
+        marker_definitions = get_default_marker_definitions(self.markDefs)
+        marker_definitions.update(self.marker_definitions)
+        self.marker_definitions = marker_definitions
         self.marker_frequencies = self._compute_marker_frequencies()
 
     def _compute_marker_frequencies(self) -> dict[str, int]:
