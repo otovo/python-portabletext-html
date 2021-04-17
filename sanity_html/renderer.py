@@ -59,7 +59,10 @@ class SanityBlockRenderer:
 
         if list_nodes:
             tree = self._normalize_list_tree(list_nodes, Block(**node))
-            result += ''.join([self._render_node(n, Block(**node), list_item=True) for n in tree])
+            result += ''.join(
+                self._render_node(n, Block(**node), list_item=True) for n in tree
+            )
+
 
         result = result.strip()
 
