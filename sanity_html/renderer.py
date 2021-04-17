@@ -47,7 +47,8 @@ class SanityBlockRenderer:
         for node in self._blocks:
 
             if list_nodes and not is_list(node):
-                result += self._render_list(list_nodes)
+                tree = self._normalize_list_tree(list_nodes, Block(**node))
+                result += ''.join([self._render_node(n, Block(**node), list_item=True) for n in tree])
                 list_nodes = []  # reset list_nodes
 
             if is_list(node):
@@ -57,7 +58,8 @@ class SanityBlockRenderer:
             result += self._render_node(node)  # render non-list nodes immediately
 
         if list_nodes:
-            result += self._render_list(list_nodes)
+            tree = self._normalize_list_tree(list_nodes, Block(**node))
+            result += ''.join([self._render_node(n, Block(**node), list_item=True) for n in tree])
 
         result = result.strip()
 
@@ -73,7 +75,10 @@ class SanityBlockRenderer:
         :param context: Optional context. Spans are passed with a Block instance as context for mark lookups.
         :param list_item: Whether we are handling a list upstream (impacts block handling).
         """
-        if is_block(node):
+        if is_list(node):
+            block = Block(**node, marker_definitions=self._custom_marker_definitions)
+            return self._render_list(block, context)
+        elif is_block(node):
             block = Block(**node, marker_definitions=self._custom_marker_definitions)
             return self._render_block(block, list_item=list_item)
 
@@ -130,40 +135,87 @@ class SanityBlockRenderer:
 
         return result
 
-    def _render_list(self, nodes: list) -> str:
-        result, tag_dict = '', {}
-        for index, node in enumerate(nodes):
-
-            current_level = node['level']  # 1
-            prev_level = nodes[index - 1]['level'] if index > 0 else 0  # default triggers first condition below
-
-            list_item = node.pop('listItem')  # popping this attribute lets us call render_node for non-list handling
-            node_inner_html = '<li>' + ''.join(list(self._render_node(node, list_item=True))) + '</li>'
-
-            if current_level > prev_level:
-                list_tags = get_list_tags(list_item)
-                result += list_tags[0]
-                result += node_inner_html
-                tag_dict[current_level] = list_tags[1]
-                continue
-
-            elif current_level == prev_level:
-                result += node_inner_html
-                continue
-
-            elif current_level < prev_level:
-                result += node_inner_html
-                result += tag_dict.pop(prev_level)
-                continue
-
-            else:
-                print('Unexpected code path 🕵🏻‍')  # noqa: T001 # TODO: Remove or alter when done testing
-
-        # there should be one or more tag in the dict for us to close off
-        for value in tag_dict.values():
-            result += value
-
+    def _render_list(self, node: Block, context: Optional[Block]) -> str:
+        assert node.listItem
+        head, tail = get_list_tags(node.listItem)
+        result = head
+        for child in node.children:
+            result += f'<li>{self._render_block(Block(**child), True)}</li>'
+        result += tail
         return result
+
+    def _normalize_list_tree(self, nodes: list, block: Block) -> list[dict]:
+        tree = []
+
+        current_list = None
+        for node in nodes:
+            if not is_block(node):
+                tree.append(node)
+                current_list = None
+                continue
+
+            if current_list is None:
+                current_list = self._list_from_block(node)
+                tree.append(current_list)
+                continue
+
+            if node.get('level') == current_list['level'] and node.get('listItem') == current_list['listItem']:
+                current_list['children'].append(node)
+                continue
+
+            if node.get('level') > current_list['level']:
+                new_list = self._list_from_block(node)
+                current_list['children'][-1]['children'].append(new_list)
+                current_list = new_list
+                continue
+
+            if node.get('level') < current_list['level']:
+                parent = self._find_list(tree[-1], level=node.get('level'), list_item=node.get('listItem'))
+                if parent:
+                    current_list = parent
+                    current_list['children'].append(node)
+                    continue
+                current_list = self._list_from_block(node)
+                tree.append(current_list)
+                continue
+
+            if node.get('listItem') != current_list['listItem']:
+                match = self._find_list(tree[-1], level=node.get('level'))
+                if match and match['listItem'] == node.get('listItem'):
+                    current_list = match
+                    current_list.children.append(node)
+                    continue
+                current_list = self._list_from_block(node)
+                tree.append(current_list)
+                continue
+            # TODO: Warn
+            tree.append(node)
+
+        return tree
+
+    def _find_list(self, root_node: dict, level: int, list_item: Optional[str] = None) -> Optional[dict]:
+        filter_on_type = isinstance(list_item, str)
+        if (
+            root_node.get('_type') == 'list'
+            and root_node.get('level') == level
+            and (filter_on_type and root_node.get('listItem') == list_item)
+        ):
+            return root_node
+
+        children = root_node.get('children')
+        if children:
+            return self._find_list(children[-1], level, list_item)
+
+        return None
+
+    def _list_from_block(self, block: dict) -> dict:
+        return {
+            '_type': 'list',
+            '_key': f'${block["_key"]}-parent',
+            'level': block.get('level'),
+            'listItem': block['listItem'],
+            'children': [block],
+        }
 
 
 def render(blocks: List[Dict]) -> str:

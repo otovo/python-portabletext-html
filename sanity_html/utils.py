@@ -38,7 +38,7 @@ def is_span(node: dict) -> bool:
 
 def is_block(node: dict) -> bool:
     """Check whether a node is a block node."""
-    return node.get('_type') == 'block' and 'listItem' not in node
+    return node.get('_type') == 'block'
 
 
 def get_list_tags(list_item: str) -> tuple[str, str]:
