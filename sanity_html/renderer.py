@@ -88,17 +88,17 @@ class SanityBlockRenderer:
             return ''
 
     def _render_block(self, block: Block, list_item: bool = False) -> str:
-        text = ''
-        if not list_item:
-            tag = STYLE_MAP[block.style]
+        text, tag = '', STYLE_MAP[block.style]
+
+        if not list_item or tag != 'p':
             text += f'<{tag}>'
 
-            for child_node in block.children:
-                text += self._render_node(child_node, context=block)
+        for child_node in block.children:
+            text += self._render_node(child_node, context=block)
+
+        if not list_item or tag != 'p':
             text += f'</{tag}>'
-        else:
-            for child_node in block.children:
-                text += self._render_node(child_node, context=block)
+
         return text
 
     def _render_span(self, span: Span, block: Block) -> str:
