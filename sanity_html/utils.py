@@ -41,6 +41,11 @@ def is_block(node: dict) -> bool:
     return node.get('_type') == 'block' and 'listItem' not in node
 
 
+def is_image(node: dict) -> bool:
+    """Check whether a node is an image node."""
+    return node.get('_type') == 'image'
+
+
 def get_list_tags(list_item: str) -> tuple[str, str]:
     """Return the appropriate list tags for a given list item."""
     # TODO: Make it possible for users to pass their own maps, perhaps by adding this to the class

@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 import html
+import logging
 from typing import TYPE_CHECKING
 
 from sanity_html.constants import STYLE_MAP
 from sanity_html.dataclasses import Block, Span
 from sanity_html.marker_definitions import DefaultMarkerDefinition
-from sanity_html.utils import get_list_tags, is_block, is_list, is_span
+from sanity_html.utils import get_list_tags, is_block, is_image, is_list, is_span
 
 if TYPE_CHECKING:
     from typing import Dict, List, Optional, Union
+
+logger = logging.getLogger('python_sanity_html')
 
 
 # TODO: Let user pass custom code block definitions/plugins
@@ -36,16 +39,17 @@ class SanityBlockRenderer:
         result = ''
         list_nodes: List[Dict] = []
         for node in self._blocks:
-
             if list_nodes and not is_list(node):
                 result += self._render_list(list_nodes)
                 list_nodes = []  # reset list_nodes
 
             if is_list(node):
                 list_nodes.append(node)
-                continue  # handle all elements ^ when the list ends
-
-            result += self._render_node(node)  # render non-list nodes immediately
+                # handle all elements ^ when the list ends
+            elif is_image(node):
+                result += self._render_image(node)
+            else:
+                result += self._render_node(node)  # render non-list nodes immediately
 
         if list_nodes:
             result += self._render_list(list_nodes)
@@ -154,6 +158,15 @@ class SanityBlockRenderer:
             result += value
 
         return result
+
+    def _render_image(self, node: dict) -> str:
+        """Images are currently not supported, but should be added in the future.
+
+        The biggest blocker seems to be that we require a python-based image url-builder
+        which would be another project, mimicking https://github.com/sanity-io/image-url.
+        """
+        logger.warning('Skipping image rendering. Image rendering is not yet implemented.')
+        return ''
 
 
 def render(blocks: List[Dict]) -> str:
