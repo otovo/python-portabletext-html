@@ -6,7 +6,7 @@ from typing import Optional, Type
 import pytest
 
 from sanity_html import render
-from sanity_html.marker_definitions import LinkMarkerDefinition, MarkerDefinition
+from sanity_html.marker_serializers import LinkSerializer, MarkerSerializer
 from sanity_html.renderer import SanityBlockRenderer
 from sanity_html.types import Block, Span
 
@@ -301,7 +301,7 @@ def test_052_custom_mark():
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
 
-    class CustomMarkerSerializer(MarkerDefinition):
+    class CustomMarkerSerializer(MarkerSerializer):
         tag = 'span'
 
         @classmethod
@@ -317,7 +317,7 @@ def test_053_override_default_mark():
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
 
-    class CustomLinkMark(LinkMarkerDefinition):
+    class CustomLinkMark(LinkSerializer):
         @classmethod
         def render_prefix(cls, span, marker, context) -> str:
             result = super().render_prefix(span, marker, context)

@@ -4,14 +4,14 @@ import html
 from typing import TYPE_CHECKING
 
 from sanity_html.constants import STYLE_MAP
-from sanity_html.marker_definitions import DefaultMarkerDefinition
+from sanity_html.marker_serializers import DefaultMarkerSerializer
 from sanity_html.types import Block, Span
 from sanity_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
     from typing import Callable, Dict, List, Optional, Type, Union
 
-    from sanity_html.marker_definitions import MarkerDefinition
+    from sanity_html.marker_serializers import MarkerSerializer
 
 
 class SanityBlockRenderer:
@@ -20,7 +20,7 @@ class SanityBlockRenderer:
     def __init__(
         self,
         blocks: Union[list[dict], dict],
-        custom_marker_definitions: dict[str, Type[MarkerDefinition]] = None,
+        custom_marker_definitions: dict[str, Type[MarkerSerializer]] = None,
         custom_serializers: dict[str, Callable[[dict, Optional[Block], bool], str]] = None,
     ) -> None:
         self._wrapper_element: Optional[str] = None
@@ -74,7 +74,7 @@ class SanityBlockRenderer:
         """
         if is_list(node):
             block = Block(**node, marker_definitions=self._custom_marker_definitions)
-            return self._render_list(block, context)
+            return self._render_list(block)
         elif is_block(node):
             block = Block(**node, marker_definitions=self._custom_marker_definitions)
             return self._render_block(block, list_item=list_item)
@@ -119,7 +119,7 @@ class SanityBlockRenderer:
         for mark in sorted_marks:
             if mark in prev_marks:
                 continue
-            marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
+            marker_callable = block.marker_definitions.get(mark, DefaultMarkerSerializer)()
             result += marker_callable.render_prefix(span, mark, block)
 
         result += html.escape(span.text).replace('\n', '<br/>')
@@ -128,12 +128,12 @@ class SanityBlockRenderer:
             if mark in next_marks:
                 continue
 
-            marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
+            marker_callable = block.marker_definitions.get(mark, DefaultMarkerSerializer)()
             result += marker_callable.render_suffix(span, mark, block)
 
         return result
 
-    def _render_list(self, node: Block, context: Optional[Block]) -> str:
+    def _render_list(self, node: Block) -> str:
         assert node.listItem
         head, tail = get_list_tags(node.listItem)
         result = head
