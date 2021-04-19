@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from sanity_html.marker_definitions import MarkerDefinition
 
 
-def get_marker_definitions(mark_defs: list[dict]) -> dict[str, Type[MarkerDefinition]]:
+def get_default_marker_definitions(mark_defs: list[dict]) -> dict[str, Type[MarkerDefinition]]:
     """
     Convert JSON definitions to a map of marker definition renderers.
 
@@ -38,7 +38,7 @@ def is_span(node: dict) -> bool:
 
 def is_block(node: dict) -> bool:
     """Check whether a node is a block node."""
-    return node.get('_type') == 'block' and 'listItem' not in node
+    return node.get('_type') == 'block'
 
 
 def get_list_tags(list_item: str) -> tuple[str, str]:
