@@ -8,7 +8,7 @@ from sanity_html.utils import get_default_marker_definitions
 if TYPE_CHECKING:
     from typing import Literal, Optional, Tuple, Type, Union
 
-    from sanity_html.marker_definitions import MarkerDefinition
+    from sanity_html.marker_serializers import MarkerSerializer
 
 
 @dataclass(frozen=True)
@@ -43,7 +43,7 @@ class Block:
     listItem: Optional[Literal['bullet', 'number', 'square']] = None
     children: list[dict] = field(default_factory=list)
     markDefs: list[dict] = field(default_factory=list)
-    marker_definitions: dict[str, Type[MarkerDefinition]] = field(default_factory=dict)
+    marker_definitions: dict[str, Type[MarkerSerializer]] = field(default_factory=dict)
     marker_frequencies: dict[str, int] = field(init=False)
 
     def __post_init__(self) -> None:

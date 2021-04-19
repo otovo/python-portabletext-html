@@ -2,20 +2,20 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sanity_html.marker_definitions import (
-    CodeMarkerDefinition,
-    CommentMarkerDefinition,
-    EmphasisMarkerDefinition,
-    LinkMarkerDefinition,
-    StrikeThroughMarkerDefinition,
-    StrongMarkerDefinition,
-    UnderlineMarkerDefinition,
+from sanity_html.marker_serializers import (
+    CodeSerializer,
+    CommentSerializer,
+    EmphasisSerializer,
+    LinkSerializer,
+    StrikeThroughSerializer,
+    StrongSerializer,
+    UnderlineSerializer,
 )
 
 if TYPE_CHECKING:
     from typing import Dict, Type
 
-    from sanity_html.marker_definitions import MarkerDefinition
+    from sanity_html.marker_serializers import MarkerSerializer
 
 STYLE_MAP = {
     'h1': 'h1',
@@ -28,15 +28,15 @@ STYLE_MAP = {
     'normal': 'p',
 }
 
-DECORATOR_MARKER_DEFINITIONS: Dict[str, Type[MarkerDefinition]] = {
-    'em': EmphasisMarkerDefinition,
-    'strong': StrongMarkerDefinition,
-    'code': CodeMarkerDefinition,
-    'underline': UnderlineMarkerDefinition,
-    'strike-through': StrikeThroughMarkerDefinition,
+DECORATOR_MARKER_SERIALIZERS: Dict[str, Type[MarkerSerializer]] = {
+    'em': EmphasisSerializer,
+    'strong': StrongSerializer,
+    'code': CodeSerializer,
+    'underline': UnderlineSerializer,
+    'strike-through': StrikeThroughSerializer,
 }
 
-ANNOTATION_MARKER_DEFINITIONS: Dict[str, Type[MarkerDefinition]] = {
-    'link': LinkMarkerDefinition,
-    'comment': CommentMarkerDefinition,
+ANNOTATION_MARKER_SERIALIZERS: Dict[str, Type[MarkerSerializer]] = {
+    'link': LinkSerializer,
+    'comment': CommentSerializer,
 }
