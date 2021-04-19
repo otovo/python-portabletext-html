@@ -100,7 +100,7 @@ class LinkMarkerDefinition(MarkerDefinition):
         marker_defintion = next((md for md in context.markDefs if md['_key'] == marker), None)
         if not marker_defintion:
             raise ValueError(f'Marker definition for key: {marker} not found in parent block context')
-        href = marker_defintion['href']
+        href = marker_defintion.get('href', '')
         return f'<a href="{href}">'
 
 
