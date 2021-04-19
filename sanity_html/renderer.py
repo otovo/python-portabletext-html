@@ -14,10 +14,6 @@ if TYPE_CHECKING:
     from sanity_html.marker_definitions import MarkerDefinition
 
 
-# TODO: Let user pass custom code block definitions/plugins
-#  to represent custom types (see children definition in portable text spec)
-
-
 class SanityBlockRenderer:
     """HTML renderer for Sanity block content."""
 
@@ -44,10 +40,11 @@ class SanityBlockRenderer:
 
         result = ''
         list_nodes: List[Dict] = []
+
         for node in self._blocks:
 
             if list_nodes and not is_list(node):
-                tree = self._normalize_list_tree(list_nodes, Block(**node))
+                tree = self._normalize_list_tree(list_nodes)
                 result += ''.join([self._render_node(n, Block(**node), list_item=True) for n in tree])
                 list_nodes = []  # reset list_nodes
 
@@ -58,11 +55,8 @@ class SanityBlockRenderer:
             result += self._render_node(node)  # render non-list nodes immediately
 
         if list_nodes:
-            tree = self._normalize_list_tree(list_nodes, Block(**node))
-            result += ''.join(
-                self._render_node(n, Block(**node), list_item=True) for n in tree
-            )
-
+            tree = self._normalize_list_tree(list_nodes)
+            result += ''.join(self._render_node(n, Block(**node), list_item=True) for n in tree)
 
         result = result.strip()
 
@@ -95,8 +89,8 @@ class SanityBlockRenderer:
 
             assert context  # this should be a cast
             return self._render_span(span, block=context)  # context is span's outer block
-        elif custom_serializer := self._custom_serializers.get(node.get('_type', '')):
-            return custom_serializer(node, context, list_item)
+        elif self._custom_serializers.get(node.get('_type', '')):
+            return self._custom_serializers.get(node.get('_type', ''))(node, context, list_item)  # type: ignore
         else:
             print('Unexpected code path 👺')  # noqa: T001 # TODO: Remove after thorough testing
             return ''
@@ -147,7 +141,7 @@ class SanityBlockRenderer:
         result += tail
         return result
 
-    def _normalize_list_tree(self, nodes: list, block: Block) -> list[dict]:
+    def _normalize_list_tree(self, nodes: list) -> list[dict]:
         tree = []
 
         current_list = None
@@ -186,7 +180,7 @@ class SanityBlockRenderer:
                 match = self._find_list(tree[-1], level=node.get('level'))
                 if match and match['listItem'] == node.get('listItem'):
                     current_list = match
-                    current_list.children.append(node)
+                    current_list['children'].append(node)
                     continue
                 current_list = self._list_from_block(node)
                 tree.append(current_list)

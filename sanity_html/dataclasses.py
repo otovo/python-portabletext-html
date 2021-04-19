@@ -9,7 +9,6 @@ if TYPE_CHECKING:
     from typing import Literal, Optional, Tuple, Type, Union
 
     from sanity_html.marker_definitions import MarkerDefinition
-    from sanity_html.types import SanityIdType
 
 
 @dataclass(frozen=True)
@@ -22,7 +21,7 @@ class Span:
     _type: Literal['span']
     text: str
 
-    _key: SanityIdType = None
+    _key: Optional[str] = None
     marks: list[str] = field(default_factory=list)  # keys that correspond with block.mark_definitions
     style: Literal['normal'] = 'normal'
 
@@ -38,7 +37,7 @@ class Block:
 
     _type: Literal['block']
 
-    _key: SanityIdType = None
+    _key: Optional[str] = None
     style: Literal['h1', 'h2', 'h3', 'h4', 'normal'] = 'normal'
     level: Optional[int] = None
     listItem: Optional[Literal['bullet', 'number', 'square']] = None
@@ -72,16 +71,18 @@ class Block:
     def get_node_siblings(self, node: Union[dict, Span]) -> Tuple[Optional[dict], Optional[dict]]:
         """Return the sibling nodes (prev, next) to the given node."""
         if not self.children:
-            return (None, None)
+            return None, None
         try:
-            if type(node) == dict:
+            if not isinstance(node, (dict, Span)):
+                raise ValueError(f'Expected dict or Span but received {type(node)}')
+            elif type(node) == dict:
                 node = cast(dict, node)
                 node_idx = self.children.index(node)
             elif type(node) == Span:
                 node = cast(Span, node)
                 node_idx = self.children.index(next((c for c in self.children if c.get('_key') == node._key), {}))
         except ValueError:
-            return (None, None)
+            return None, None
 
         prev_node = None
         next_node = None
@@ -91,4 +92,4 @@ class Block:
         if node_idx < len(self.children) - 2:
             next_node = self.children[node_idx + 1]
 
-        return (prev_node, next_node)
+        return prev_node, next_node

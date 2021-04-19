@@ -97,10 +97,10 @@ class LinkMarkerDefinition(MarkerDefinition):
         The href attribute is fetched from the provided block context using
         the provided marker key.
         """
-        marker_defintion = next((md for md in context.markDefs if md['_key'] == marker), None)
-        if not marker_defintion:
+        marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
+        if not marker_definition:
             raise ValueError(f'Marker definition for key: {marker} not found in parent block context')
-        href = marker_defintion.get('href', '')
+        href = marker_definition.get('href', '')
         return f'<a href="{href}">'
 
 
