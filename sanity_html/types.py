@@ -38,7 +38,7 @@ class Block:
     _type: Literal['block']
 
     _key: Optional[str] = None
-    style: Literal['h1', 'h2', 'h3', 'h4', 'normal'] = 'normal'
+    style: Literal['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'normal'] = 'normal'
     level: Optional[int] = None
     listItem: Optional[Literal['bullet', 'number', 'square']] = None
     children: list[dict] = field(default_factory=list)

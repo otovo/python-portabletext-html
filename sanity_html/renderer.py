@@ -4,8 +4,8 @@ import html
 from typing import TYPE_CHECKING
 
 from sanity_html.constants import STYLE_MAP
-from sanity_html.dataclasses import Block, Span
 from sanity_html.marker_definitions import DefaultMarkerDefinition
+from sanity_html.types import Block, Span
 from sanity_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
@@ -96,17 +96,17 @@ class SanityBlockRenderer:
             return ''
 
     def _render_block(self, block: Block, list_item: bool = False) -> str:
-        text = ''
-        if not list_item:
-            tag = STYLE_MAP[block.style]
+        text, tag = '', STYLE_MAP[block.style]
+
+        if not list_item or tag != 'p':
             text += f'<{tag}>'
 
-            for child_node in block.children:
-                text += self._render_node(child_node, context=block)
+        for child_node in block.children:
+            text += self._render_node(child_node, context=block)
+
+        if not list_item or tag != 'p':
             text += f'</{tag}>'
-        else:
-            for child_node in block.children:
-                text += self._render_node(child_node, context=block)
+
         return text
 
     def _render_span(self, span: Span, block: Block) -> str:
@@ -127,6 +127,7 @@ class SanityBlockRenderer:
         for mark in reversed(sorted_marks):
             if mark in next_marks:
                 continue
+
             marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
             result += marker_callable.render_suffix(span, mark, block)
 
@@ -215,7 +216,7 @@ class SanityBlockRenderer:
         }
 
 
-def render(blocks: List[Dict]) -> str:
+def render(blocks: List[Dict], *args, **kwargs) -> str:
     """Shortcut function inspired by Sanity's own blocksToHtml.h callable."""
-    renderer = SanityBlockRenderer(blocks)
+    renderer = SanityBlockRenderer(blocks, *args, **kwargs)
     return renderer.render()

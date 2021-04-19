@@ -1,4 +1,3 @@
-from sanity_html.dataclasses import Block, Span
 from sanity_html.marker_definitions import (
     CommentMarkerDefinition,
     EmphasisMarkerDefinition,
@@ -7,6 +6,7 @@ from sanity_html.marker_definitions import (
     StrongMarkerDefinition,
     UnderlineMarkerDefinition,
 )
+from sanity_html.types import Block, Span
 
 sample_texts = ['test', None, 1, 2.2, '!"#$%&/()']
 
