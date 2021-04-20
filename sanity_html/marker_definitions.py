@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Type
 
-    from sanity_html.dataclasses import Block, Span
+    from sanity_html.types import Block, Span
 
 
 class MarkerDefinition:

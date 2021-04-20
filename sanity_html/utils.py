@@ -20,8 +20,9 @@ def get_default_marker_definitions(mark_defs: list[dict]) -> dict[str, Type[Mark
     marker_definitions = {}
 
     for definition in mark_defs:
-        marker = ANNOTATION_MARKER_DEFINITIONS[definition['_type']]
-        marker_definitions[definition['_key']] = marker
+        if definition['_type'] in ANNOTATION_MARKER_DEFINITIONS:
+            marker = ANNOTATION_MARKER_DEFINITIONS[definition['_type']]
+            marker_definitions[definition['_key']] = marker
 
     return {**marker_definitions, **DECORATOR_MARKER_DEFINITIONS}
 

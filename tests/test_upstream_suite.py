@@ -1,14 +1,14 @@
 import json
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Type
 
 import pytest
 
 from sanity_html import render
-from sanity_html.dataclasses import Block
 from sanity_html.marker_definitions import LinkMarkerDefinition, MarkerDefinition
 from sanity_html.renderer import SanityBlockRenderer
+from sanity_html.types import Block, Span
 
 
 def fake_image_serializer(node: dict, context: Optional[Block], list_item: bool):
@@ -300,7 +300,15 @@ def test_052_custom_mark():
     fixture_data = get_fixture('fixtures/upstream/052-custom-marks.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+
+    class CustomMarkerSerializer(MarkerDefinition):
+        tag = 'span'
+
+        @classmethod
+        def render_prefix(cls, span: Span, marker: str, context: Block) -> str:
+            return '<span style="border:5px solid;">'
+
+    output = render(input_blocks, custom_marker_definitions={'mark1': CustomMarkerSerializer})
     assert output == expected_output
 
 
