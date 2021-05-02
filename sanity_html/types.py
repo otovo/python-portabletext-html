@@ -68,25 +68,30 @@ class Block:
                     counts[mark] = 0
         return counts
 
-    def get_node_siblings(self, node: Union[dict, Span]) -> Tuple[Optional[dict], Optional[dict]]:
+    def get_node_siblings(
+        self, node: Union[dict, Span], child_idx: Optional[int] = None
+    ) -> Tuple[Optional[dict], Optional[dict]]:
         """Return the sibling nodes (prev, next) to the given node."""
         if not self.children:
             return None, None
-        try:
-            if not isinstance(node, (dict, Span)):
-                raise ValueError(f'Expected dict or Span but received {type(node)}')
-            elif type(node) == dict:
-                node = cast(dict, node)
-                node_idx = self.children.index(node)
-            elif type(node) == Span:
-                node = cast(Span, node)
-                node_idx = self.children.index(next((c for c in self.children if c.get('_key') == node._key), {}))
-        except ValueError:
-            return None, None
+        if child_idx is not None:
+            node_idx = child_idx
+        else:
+
+            try:
+                if not isinstance(node, (dict, Span)):
+                    raise ValueError(f'Expected dict or Span but received {type(node)}')
+                elif type(node) == dict:
+                    node = cast(dict, node)
+                    node_idx = self.children.index(node)
+                elif type(node) == Span:
+                    node = cast(Span, node)
+                    node_idx = self.children.index(next((c for c in self.children if c.get('_key') == node._key), {}))
+            except ValueError:
+                return None, None
 
         prev_node = None
         next_node = None
-
         if node_idx >= 1:
             prev_node = self.children[node_idx - 1]
         if node_idx < len(self.children) - 2:

@@ -40,14 +40,3 @@ def is_span(node: dict) -> bool:
 def is_block(node: dict) -> bool:
     """Check whether a node is a block node."""
     return node.get('_type') == 'block'
-
-
-def get_list_tags(list_item: str) -> tuple[str, str]:
-    """Return the appropriate list tags for a given list item."""
-    # TODO: Make it possible for users to pass their own maps, perhaps by adding this to the class
-    # and checking optional class context variables defined on initialization.
-    return {
-        'bullet': ('<ul>', '</ul>'),
-        'square': ('<ul style="list-style-type: square">', '</ul>'),
-        'number': ('<ol>', '</ol>'),
-    }[list_item]
