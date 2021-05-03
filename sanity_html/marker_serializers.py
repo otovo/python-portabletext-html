@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from typing import Type
+    from typing import Optional, Type
 
     from sanity_html.types import Block, Span
 
@@ -12,6 +12,7 @@ class MarkerSerializer:
     """Base class for marker definition handlers."""
 
     tag: str
+    type: Optional[str]
 
     @classmethod
     def render_prefix(cls: Type[MarkerSerializer], span: Span, marker: str, context: Block) -> str:

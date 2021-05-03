@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, cast
 
-from sanity_html.utils import get_default_marker_definitions
+from sanity_html.constants import ANNOTATION_MARKER_SERIALIZERS, DECORATOR_MARKER_SERIALIZERS
 
 if TYPE_CHECKING:
     from typing import Literal, Optional, Tuple, Type, Union
@@ -53,7 +53,15 @@ class Block:
         To make handling of span `marks` simpler, we define marker_definitions as a dict, from which
         we can directly look up both annotation marks or decorator marks.
         """
-        marker_definitions = get_default_marker_definitions(self.markDefs)
+        marker_definitions = DECORATOR_MARKER_SERIALIZERS.copy()
+        for definition in self.markDefs:
+            if definition['_type'] in ANNOTATION_MARKER_SERIALIZERS:
+                marker = ANNOTATION_MARKER_SERIALIZERS[definition['_type']]
+                marker_definitions[definition['_key']] = marker
+            if definition['_type'] in self.marker_definitions:
+                marker = self.marker_definitions[definition['_type']]
+                marker_definitions[definition['_key']] = marker
+
         marker_definitions.update(self.marker_definitions)
         self.marker_definitions = marker_definitions
         self.marker_frequencies = self._compute_marker_frequencies()
@@ -77,7 +85,7 @@ class Block:
         if child_idx is not None:
             node_idx = child_idx
         else:
-
+            print('fallback')
             try:
                 if not isinstance(node, (dict, Span)):
                     raise ValueError(f'Expected dict or Span but received {type(node)}')
@@ -92,9 +100,11 @@ class Block:
 
         prev_node = None
         next_node = None
+        print(node_idx, self.children)
+        print(node_idx, len(self.children), node_idx < len(self.children) - 2)
         if node_idx >= 1:
             prev_node = self.children[node_idx - 1]
-        if node_idx < len(self.children) - 2:
+        if node_idx <= len(self.children) - 2:
             next_node = self.children[node_idx + 1]
 
         return prev_node, next_node

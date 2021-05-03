@@ -47,6 +47,23 @@ def fake_image_serializer(node: dict, context: Optional[Block], list_item: bool)
     return f'<figure>{image}</figure>'
 
 
+def fake_codeserializer(node: dict, context: Optional[Block], list_item: bool):
+    """
+    {
+    "input": [
+        {
+            "_type": "code",
+            "_key": "9a15ea2ed8a2",
+            "language": "javascript",
+            "code": "const foo = require('foo')\n\nfoo('hi there', (err, thing) => {\n  console.log(err)\n})\n"
+        }
+    ],
+    "output": "<pre data-language=\"javascript\"><code>const foo = require(&#x27;foo&#x27;)\n\nfoo(&#x27;hi there&#x27;, (err, thing) =&gt; {\n  console.log(err)\n})\n</code></pre>"
+    """
+    assert node['_type'] == 'code'
+    import html
+    return f'<pre data-language=\"javascript\"><code>{html.escape(node["code"])}</code></pre>'
+
 def get_fixture(rel_path) -> dict:
     """Load and return fixture data as dict."""
     return json.loads((Path(__file__).parent / rel_path).read_text())
@@ -198,7 +215,18 @@ def test_018_marks_all_the_way_dow():
     fixture_data = get_fixture('fixtures/upstream/018-marks-all-the-way-down.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    class Highlight(MarkerSerializer):
+        tag = 'span'
+        type = 'highlight'
+        @classmethod
+        def render_prefix(cls: Type[MarkerSerializer], span: Span, marker: str, context: Block) -> str:
+            marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
+            if not marker_definition:
+                raise ValueError(f'Marker definition for key: {marker} not found in parent block context')
+            thickness = marker_definition.get('thickness', '')
+            return f'<span style="border:{thickness}px solid;">'
+    sbr = SanityBlockRenderer(input_blocks, custom_marker_definitions={'highlight': Highlight})
+    output = sbr.render()
     assert output == expected_output
 
 
@@ -277,12 +305,12 @@ def test_027_styled_list_item():
     assert output == expected_output
 
 
-@pytest.mark.unsupported
 def test_050_custom_block_type():
     fixture_data = get_fixture('fixtures/upstream/050-custom-block-type.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'code': fake_codeserializer})
+    output = sbr.render()
     assert output == expected_output
 
 
@@ -295,7 +323,6 @@ def test_051_override_default():
     assert output == expected_output
 
 
-@pytest.mark.unsupported
 def test_052_custom_mark():
     fixture_data = get_fixture('fixtures/upstream/052-custom-marks.json')
     input_blocks = fixture_data['input']

@@ -8,6 +8,7 @@ from sanity_html.utils import is_block, is_list
 if TYPE_CHECKING:
     from collections import deque
     from typing import Optional
+
     from sanity_html import SanityBlockRenderer
 
 
@@ -15,7 +16,7 @@ class ListSerializer:
     def __init__(self, sanity_renderer: SanityBlockRenderer) -> None:
         self.sanity_renderer = sanity_renderer
 
-    def render(self, node: dict, blocks: deque[dict]) -> str:
+    def __call__(self, node: dict, blocks: deque[dict]) -> str:
         result = ''
         list_items: list[dict] = [node]
         while blocks and is_list(blocks[0]):
