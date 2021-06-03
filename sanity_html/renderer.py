@@ -86,7 +86,10 @@ class SanityBlockRenderer:
 
         elif is_span(node):
             logger.debug('Rendering node as span')
-            span = Span(**node)
+            if isinstance(node, str):
+                span = Span(**{'text': node})
+            else:
+                span = Span(**node)
 
             assert context  # this should be a cast
             return self._render_span(span, block=context)  # context is span's outer block

@@ -73,14 +73,18 @@ class Block:
         if not self.children:
             return None, None
         try:
-            if not isinstance(node, (dict, Span)):
-                raise ValueError(f'Expected dict or Span but received {type(node)}')
-            elif type(node) == dict:
+            if type(node) == dict:
                 node = cast(dict, node)
                 node_idx = self.children.index(node)
             elif type(node) == Span:
                 node = cast(Span, node)
-                node_idx = self.children.index(next((c for c in self.children if c.get('_key') == node._key), {}))
+                for index, item in enumerate(self.children):
+                    if node.text == item['text']:
+                        # Is it possible to handle several identical texts?
+                        node_idx = index
+                        break
+            else:
+                raise ValueError(f'Expected dict or Span but received {type(node)}')
         except ValueError:
             return None, None
 
