@@ -87,9 +87,9 @@ class Block:
         prev_node = None
         next_node = None
 
-        if node_idx >= 1:
+        if node_idx != 0:
             prev_node = self.children[node_idx - 1]
-        if node_idx < len(self.children) - 2:
+        if node_idx != len(self.children) - 1:
             next_node = self.children[node_idx + 1]
 
         return prev_node, next_node
