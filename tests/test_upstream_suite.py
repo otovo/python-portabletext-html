@@ -261,11 +261,16 @@ def test_025_image_with_hotspot():
     assert output == expected_output
 
 
+def button_serializer(node: dict, context: Optional[Block], list_item: bool):
+    return f'<button>{node["text"]}</button>'
+
+
 def test_026_inline_block_with_text():
     fixture_data = get_fixture('fixtures/upstream/026-inline-block-with-text.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    output = render(input_blocks)
+    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'button': button_serializer})
+    output = sbr.render()
     assert output == expected_output
 
 
