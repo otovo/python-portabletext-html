@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "python-sanity-html"
-version = "0.0.4"
-description = "HTML renderer for Sanity's Portable Text format"
-homepage = "https://github.com/otovo/python-sanity-html"
-repository = "https://github.com/otovo/python-sanity-html"
-authors = ["Kristian Klette <klette@otovo.com>"]
-maintainers = ["Sondre Lillebø Gundersen <sondrelg@live.no>"]
-license = "Apache2"
-readme = "README.md"
-keywords = ["Sanity", "Portable text", "HTML", "Parsing"]
+name = 'python-sanity-html'
+version = '0.0.4'
+description = 'HTML renderer for Sanity's Portable Text format'
+homepage = 'https://github.com/otovo/python-sanity-html'
+repository = 'https://github.com/otovo/python-sanity-html'
+authors = ['Kristian Klette <klette@otovo.com>']
+maintainers = ['Sondre Lillebø Gundersen <sondrelg@live.no>']
+license = 'Apache2'
+readme = 'README.md'
+keywords = ['Sanity', 'Portable text', 'HTML', 'Parsing']
 include = ['CHANGELOG.md']
 packages = [{ include = 'sanity_html' }]
 classifiers = [
@@ -27,20 +27,20 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Changelog" = "https://github.com/otovo/python-sanity-html/blob/main/CHANGELOG.md"
+'Changelog' = 'https://github.com/otovo/python-sanity-html/blob/main/CHANGELOG.md'
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = '^3.7'
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.3"
-flake8 = "^3.9.0"
-pytest-cov = "^2.11.1"
-coverage = "^5.5"
+pytest = '^6.2.3'
+flake8 = '^3.9.0'
+pytest-cov = '^2.11.1'
+coverage = '^5.5'
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ['poetry-core>=1.0.0']
+build-backend = 'poetry.core.masonry.api'
 
 [tool.black]
 line-length = 120
@@ -55,7 +55,7 @@ line_length = 120
 
 [tool.pytest.ini_options]
 addopts = ['--cov=sanity_html','--cov-report', 'term-missing']
-markers = ["unsupported"]
+markers = ['unsupported']
 
 [tool.coverage.run]
 source = ['sanity_html/*']
