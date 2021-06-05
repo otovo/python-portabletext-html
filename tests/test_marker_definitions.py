@@ -1,3 +1,4 @@
+from sanity_html import SanityBlockRenderer
 from sanity_html.marker_definitions import (
     CommentMarkerDefinition,
     EmphasisMarkerDefinition,
@@ -56,3 +57,24 @@ def test_render_comment_marker_success():
         node = Span(_type='span', text=text)
         block = Block(_type='block', children=[node.__dict__])
         assert CommentMarkerDefinition.render(node, 'comment', block) == f'<!-- {text} -->'
+
+
+def test_custom_marker_definition():
+    from sanity_html.marker_definitions import MarkerDefinition
+
+    class ComicSansEmphasis(MarkerDefinition):
+        tag = 'em'
+
+        @classmethod
+        def render_prefix(cls, span, marker, context):
+            return f'<{cls.tag} style="font-family: "Comic Sans MS", "Comic Sans", cursive;">'
+
+    renderer = SanityBlockRenderer(
+        {
+            '_type': 'block',
+            'children': [{'_key': 'a1ph4', '_type': 'span', 'marks': ['em'], 'text': 'Sanity'}],
+            'markDefs': [],
+        },
+        custom_marker_definitions={'em': ComicSansEmphasis},
+    )
+    assert renderer.render() == '<p><em style="font-family: "Comic Sans MS", "Comic Sans", cursive;">Sanity</em></p>'
