@@ -1,7 +1,7 @@
 [tool.poetry]
 name = 'python-sanity-html'
 version = '0.0.4'
-description = 'HTML renderer for Sanity's Portable Text format'
+description = "HTML renderer for Sanity's Portable Text format"
 homepage = 'https://github.com/otovo/python-sanity-html'
 repository = 'https://github.com/otovo/python-sanity-html'
 authors = ['Kristian Klette <klette@otovo.com>']
