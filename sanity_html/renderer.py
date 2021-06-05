@@ -55,6 +55,7 @@ class SanityBlockRenderer:
     def render(self) -> str:
         """Render HTML from self._blocks."""
         logger.debug('Rendering HTML')
+
         if not self._blocks:
             return ''
 
@@ -117,7 +118,7 @@ class SanityBlockRenderer:
                     f'Found unhandled node type: {node["_type"]}. ' 'Most likely this requires a custom serializer.'
                 )
             else:
-                raise UnhandledNodeError(f'Received node that we cannot handle: {node.__dict__}')
+                raise UnhandledNodeError(f'Received node that we cannot handle: {node}')
 
     def _render_block(self, block: Block, list_item: bool = False) -> str:
         text, tag = '', STYLE_MAP[block.style]
