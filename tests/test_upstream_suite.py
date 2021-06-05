@@ -27,7 +27,7 @@ def fake_image_serializer(node: dict, context: Optional[Block], list_item: bool)
         hotspot = node['hotspot']
         size_match = re.match(r'.*-(\d+)x(\d+)\..*', image_url)
         if size_match:
-            orig_width, orig_height = [int(x) for x in size_match.groups()]
+            orig_width, orig_height = (int(x) for x in size_match.groups())
             rect_x1 = round((orig_width * hotspot['x']) - ((orig_width * hotspot['width']) / 2))
             rect_y1 = round((orig_height * hotspot['y']) - ((orig_height * hotspot['height']) / 2))
             rect_x2 = round(orig_width - (orig_width * crop['left']) - (orig_width * crop['right']))
