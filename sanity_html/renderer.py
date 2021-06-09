@@ -4,6 +4,7 @@ import html
 from typing import TYPE_CHECKING
 
 from sanity_html.constants import STYLE_MAP
+from sanity_html.logger import logger
 from sanity_html.marker_definitions import DefaultMarkerDefinition
 from sanity_html.types import Block, Span
 from sanity_html.utils import get_list_tags, is_block, is_list, is_span
@@ -23,6 +24,7 @@ class SanityBlockRenderer:
         custom_marker_definitions: dict[str, Type[MarkerDefinition]] = None,
         custom_serializers: dict[str, Callable[[dict, Optional[Block], bool], str]] = None,
     ) -> None:
+        logger.debug('Initializing block renderer')
         self._wrapper_element: Optional[str] = None
         self._custom_marker_definitions = custom_marker_definitions or {}
         self._custom_serializers = custom_serializers or {}
@@ -35,6 +37,7 @@ class SanityBlockRenderer:
 
     def render(self) -> str:
         """Render HTML from self._blocks."""
+        logger.debug('Rendering HTML')
         if not self._blocks:
             return ''
 
@@ -73,19 +76,17 @@ class SanityBlockRenderer:
         :param list_item: Whether we are handling a list upstream (impacts block handling).
         """
         if is_list(node):
+            logger.debug('Rendering node as list')
             block = Block(**node, marker_definitions=self._custom_marker_definitions)
             return self._render_list(block, context)
         elif is_block(node):
+            logger.debug('Rendering node as block')
             block = Block(**node, marker_definitions=self._custom_marker_definitions)
             return self._render_block(block, list_item=list_item)
 
         elif is_span(node):
-            if isinstance(node, str):
-                # TODO: Remove if we there's no coverage for this after we've fixed tests
-                #  not convinced this code path is possible - put it in because the sanity lib checks for it
-                span = Span(**{'text': node})
-            else:
-                span = Span(**node)
+            logger.debug('Rendering node as span')
+            span = Span(**node)
 
             assert context  # this should be a cast
             return self._render_span(span, block=context)  # context is span's outer block
@@ -110,8 +111,10 @@ class SanityBlockRenderer:
         return text
 
     def _render_span(self, span: Span, block: Block) -> str:
+        logger.debug('Rendering span')
         result: str = ''
         prev_node, next_node = block.get_node_siblings(span)
+
         prev_marks = prev_node.get('marks', []) if prev_node else []
         next_marks = next_node.get('marks', []) if next_node else []
 

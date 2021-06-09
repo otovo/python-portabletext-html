@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from sanity_html.logger import logger
+
 if TYPE_CHECKING:
     from typing import Type
 
@@ -19,6 +21,7 @@ class MarkerDefinition:
 
         Usually this this the opening of the HTML tag.
         """
+        logger.debug('Rendering %s prefix', cls.tag)
         return f'<{cls.tag}>'
 
     @classmethod
@@ -27,6 +30,7 @@ class MarkerDefinition:
 
         Usually this this the closing of the HTML tag.
         """
+        logger.debug('Rendering %s suffix', cls.tag)
         return f'</{cls.tag}>'
 
     @classmethod
