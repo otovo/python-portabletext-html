@@ -1,5 +1,5 @@
-<a href="https://pypi.org/project/python-sanity-html/">
-    <img src="https://img.shields.io/pypi/v/python-sanity-html.svg" alt="Package version">
+<a href="https://pypi.org/project/sanity-html/">
+    <img src="https://img.shields.io/pypi/v/sanity-html.svg" alt="Package version">
 </a>
 <a href="https://codecov.io/gh/otovo/python-sanity-html">
     <img src="https://codecov.io/gh/otovo/python-sanity-html/branch/main/graph/badge.svg" alt="Code coverage">
