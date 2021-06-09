@@ -165,10 +165,6 @@ class ComicSansEmphasis(MarkerDefinition):
         return f'<{cls.tag} style="font-family: "Comic Sans MS", "Comic Sans", cursive;">'
 
     @classmethod
-    def render_prefix(cls, span: Span, marker: str, context: Block) -> str:
-        return f'<{cls.tag} style="font-family: "Comic Sans MS", "Comic Sans", cursive;">'
-
-    @classmethod
     def render_suffix(cls, span: Span, marker: str, context: Block) -> str:
         return f'</{cls.tag}>'
 
@@ -197,7 +193,7 @@ class ComicSansEmphasis(MarkerDefinition):
 
 renderer = SanityBlockRenderer(
     ...,
-    custom_marker_definitions={'h1': ComicSansEmphasis}
+    custom_marker_definitions={'em': ComicSansEmphasis}
 )
 renderer.render()
 ```
