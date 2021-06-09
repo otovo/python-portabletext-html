@@ -15,6 +15,23 @@ if TYPE_CHECKING:
     from sanity_html.marker_definitions import MarkerDefinition
 
 
+class UnhandledNodeError(Exception):
+    """Raised when we receive a node that we cannot parse."""
+
+    pass
+
+
+class MissingSerializerError(UnhandledNodeError):
+    """
+    Raised when an unrecognized node _type value is found.
+
+    This usually means that you need to pass a custom serializer
+    to handle the custom type.
+    """
+
+    pass
+
+
 class SanityBlockRenderer:
     """HTML renderer for Sanity block content."""
 
@@ -93,8 +110,12 @@ class SanityBlockRenderer:
         elif self._custom_serializers.get(node.get('_type', '')):
             return self._custom_serializers.get(node.get('_type', ''))(node, context, list_item)  # type: ignore
         else:
-            print('Unexpected code path 👺')  # noqa: T001 # TODO: Remove after thorough testing
-            return ''
+            if hasattr(node, '_type'):
+                raise MissingSerializerError(
+                    f'Found unhandled node type: {node["_type"]}. ' 'Most likely this requires a custom serializer.'
+                )
+            else:
+                raise UnhandledNodeError(f'Received node that we cannot handle: {node.__dict__}')
 
     def _render_block(self, block: Block, list_item: bool = False) -> str:
         text, tag = '', STYLE_MAP[block.style]
