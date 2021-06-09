@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import html
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from sanity_html.constants import STYLE_MAP
 from sanity_html.logger import logger
@@ -96,6 +96,7 @@ class SanityBlockRenderer:
             logger.debug('Rendering node as list')
             block = Block(**node, marker_definitions=self._custom_marker_definitions)
             return self._render_list(block, context)
+
         elif is_block(node):
             logger.debug('Rendering node as block')
             block = Block(**node, marker_definitions=self._custom_marker_definitions)
@@ -104,11 +105,12 @@ class SanityBlockRenderer:
         elif is_span(node):
             logger.debug('Rendering node as span')
             span = Span(**node)
+            context = cast(Block, context)  # context should always be a Block here
+            return self._render_span(span, block=context)
 
-            assert context  # this should be a cast
-            return self._render_span(span, block=context)  # context is span's outer block
         elif self._custom_serializers.get(node.get('_type', '')):
             return self._custom_serializers.get(node.get('_type', ''))(node, context, list_item)  # type: ignore
+
         else:
             if hasattr(node, '_type'):
                 raise MissingSerializerError(
@@ -143,6 +145,7 @@ class SanityBlockRenderer:
         for mark in sorted_marks:
             if mark in prev_marks:
                 continue
+
             marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
             result += marker_callable.render_prefix(span, mark, block)
 
