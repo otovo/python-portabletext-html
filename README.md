@@ -22,7 +22,7 @@ For the most part, it mirrors [Sanity's](https://www.sanity.io/) own [block-cont
 ## Installation
 
 ```
-pip install python-sanity-html
+pip install sanity-html
 ```
 
 ## Usage
