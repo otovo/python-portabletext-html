@@ -11,7 +11,7 @@
     <img src="http://www.mypy-lang.org/static/mypy_badge.svg" alt="Checked with mypy">
 </a>
 
-# Sanity HTML Renderer
+# Sanity HTML Renderer for Python
 
 > Repo is currently a work in progress. Not production ready.
 
@@ -214,10 +214,8 @@ Blocks can optionally define a `style` tag. These styles are supported:
 
 ## Missing features
 
-Despite being mentioned as a custom type in the
-Portable Text [spec](https://github.com/portabletext/portabletext),
-the `image` type serializer is something we hope to add a default serializer for
-at some point.
+We plan to implement a default built-in serializer for the `image` type.
+In the meantime, you should be able to serialize image types by passing a custom serializer.
 
 ## Contributing
 
