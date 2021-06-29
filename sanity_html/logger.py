@@ -1,12 +1,13 @@
+"""
+Logging setup.
+
+The rest of the code gets the logger through this module rather than
+`logging.getLogger` to make sure that it is configured.
+"""
 import logging
-import sys
 
 logger = logging.getLogger('sanity_html')
 
-# Make logger output to stdout
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+if not logger.handlers:  # pragma: no cover
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(logging.NullHandler())
