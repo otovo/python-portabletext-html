@@ -13,8 +13,6 @@
 
 # Sanity HTML Renderer for Python
 
-> Repo is currently a work in progress. Not production ready.
-
 This package generates HTML from [Portable Text](https://github.com/portabletext/portabletext).
 
 For the most part, it mirrors [Sanity's](https://www.sanity.io/) own [block-content-to-html](https://www.npmjs.com/package/%40sanity/block-content-to-html) NPM library.
