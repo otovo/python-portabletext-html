@@ -26,9 +26,6 @@ classifiers = [
     'Typing :: Typed',
 ]
 
-[tool.poetry.urls]
-'Changelog' = 'https://github.com/otovo/python-sanity-html/blob/main/CHANGELOG.md'
-
 [tool.poetry.dependencies]
 python = '^3.7'
 
