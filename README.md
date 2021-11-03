@@ -214,8 +214,9 @@ Blocks can optionally define a `style` tag. These styles are supported:
 
 ## Missing features
 
-We plan to implement a default built-in serializer for the `image` type.
-In the meantime, you should be able to serialize image types by passing a custom serializer.
+For anyone interested, we would be happy to see a
+default built-in serializer for the `image` type added.
+In the meantime, users should be able to serialize image types by passing a custom serializer.
 
 ## Contributing
 
