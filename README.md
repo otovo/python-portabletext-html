@@ -13,8 +13,6 @@
 
 # Sanity HTML Renderer for Python
 
-> Repo is currently a work in progress. Not production ready.
-
 This package generates HTML from [Portable Text](https://github.com/portabletext/portabletext).
 
 For the most part, it mirrors [Sanity's](https://www.sanity.io/) own [block-content-to-html](https://www.npmjs.com/package/%40sanity/block-content-to-html) NPM library.
@@ -214,8 +212,9 @@ Blocks can optionally define a `style` tag. These styles are supported:
 
 ## Missing features
 
-We plan to implement a default built-in serializer for the `image` type.
-In the meantime, you should be able to serialize image types by passing a custom serializer.
+For anyone interested, we would be happy to see a
+default built-in serializer for the `image` type added.
+In the meantime, users should be able to serialize image types by passing a custom serializer.
 
 ## Contributing
 
