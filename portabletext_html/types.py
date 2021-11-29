@@ -3,12 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, cast
 
-from sanity_html.utils import get_default_marker_definitions
+from portabletext_html.utils import get_default_marker_definitions
 
 if TYPE_CHECKING:
     from typing import Literal, Optional, Tuple, Type, Union
 
-    from sanity_html.marker_definitions import MarkerDefinition
+    from portabletext_html.marker_definitions import MarkerDefinition
 
 
 @dataclass(frozen=True)

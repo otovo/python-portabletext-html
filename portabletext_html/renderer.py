@@ -3,16 +3,16 @@ from __future__ import annotations
 import html
 from typing import TYPE_CHECKING, cast
 
-from sanity_html.constants import STYLE_MAP
-from sanity_html.logger import logger
-from sanity_html.marker_definitions import DefaultMarkerDefinition
-from sanity_html.types import Block, Span
-from sanity_html.utils import get_list_tags, is_block, is_list, is_span
+from portabletext_html.constants import STYLE_MAP
+from portabletext_html.logger import logger
+from portabletext_html.marker_definitions import DefaultMarkerDefinition
+from portabletext_html.types import Block, Span
+from portabletext_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
     from typing import Callable, Dict, List, Optional, Type, Union
 
-    from sanity_html.marker_definitions import MarkerDefinition
+    from portabletext_html.marker_definitions import MarkerDefinition
 
 
 class UnhandledNodeError(Exception):
@@ -32,8 +32,8 @@ class MissingSerializerError(UnhandledNodeError):
     pass
 
 
-class SanityBlockRenderer:
-    """HTML renderer for Sanity block content."""
+class PortableTextRenderer:
+    """HTML renderer for Sanity's portable text format."""
 
     def __init__(
         self,
@@ -246,5 +246,5 @@ class SanityBlockRenderer:
 
 def render(blocks: List[Dict], *args, **kwargs) -> str:
     """Shortcut function inspired by Sanity's own blocksToHtml.h callable."""
-    renderer = SanityBlockRenderer(blocks, *args, **kwargs)
+    renderer = PortableTextRenderer(blocks, *args, **kwargs)
     return renderer.render()

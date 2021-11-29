@@ -6,6 +6,6 @@ def test_module_should_be_importable():
 
     This catches any compilation issue we might have.
     """
-    from sanity_html import SanityBlockRenderer
+    from portabletext_html import PortableTextRenderer
 
-    assert SanityBlockRenderer
+    assert PortableTextRenderer

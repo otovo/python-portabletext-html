@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sanity_html.marker_definitions import (
+from portabletext_html.marker_definitions import (
     CodeMarkerDefinition,
     CommentMarkerDefinition,
     EmphasisMarkerDefinition,
@@ -15,7 +15,7 @@ from sanity_html.marker_definitions import (
 if TYPE_CHECKING:
     from typing import Dict, Type
 
-    from sanity_html.marker_definitions import MarkerDefinition
+    from portabletext_html.marker_definitions import MarkerDefinition
 
 STYLE_MAP = {
     'h1': 'h1',

@@ -5,10 +5,10 @@ from typing import Optional, Type
 
 import pytest
 
-from sanity_html import render
-from sanity_html.marker_definitions import LinkMarkerDefinition, MarkerDefinition
-from sanity_html.renderer import SanityBlockRenderer
-from sanity_html.types import Block, Span
+from portabletext_html import render
+from portabletext_html.marker_definitions import LinkMarkerDefinition, MarkerDefinition
+from portabletext_html.renderer import PortableTextRenderer
+from portabletext_html.types import Block, Span
 
 
 def fake_image_serializer(node: dict, context: Optional[Block], list_item: bool):
@@ -147,7 +147,7 @@ def test_012_image_support():
     fixture_data = get_fixture('fixtures/upstream/012-image-support.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    sbr = PortableTextRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
     output = sbr.render()
     assert output == expected_output
 
@@ -156,7 +156,7 @@ def test_013_materialized_image_support():
     fixture_data = get_fixture('fixtures/upstream/013-materialized-image-support.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    sbr = PortableTextRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
     output = sbr.render()
     assert output == expected_output
 
@@ -230,7 +230,7 @@ def test_022_inline_node():
     fixture_data = get_fixture('fixtures/upstream/022-inline-nodes.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    sbr = PortableTextRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
     output = sbr.render()
     assert output == expected_output
 
@@ -247,7 +247,7 @@ def test_024_inline_image():
     fixture_data = get_fixture('fixtures/upstream/024-inline-images.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    sbr = PortableTextRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
     output = sbr.render()
     assert output == expected_output
 
@@ -256,7 +256,7 @@ def test_025_image_with_hotspot():
     fixture_data = get_fixture('fixtures/upstream/025-image-with-hotspot.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
+    sbr = PortableTextRenderer(input_blocks, custom_serializers={'image': fake_image_serializer})
     output = sbr.render()
     assert output == expected_output
 
@@ -269,7 +269,7 @@ def test_026_inline_block_with_text():
     fixture_data = get_fixture('fixtures/upstream/026-inline-block-with-text.json')
     input_blocks = fixture_data['input']
     expected_output = fixture_data['output']
-    sbr = SanityBlockRenderer(input_blocks, custom_serializers={'button': button_serializer})
+    sbr = PortableTextRenderer(input_blocks, custom_serializers={'button': button_serializer})
     output = sbr.render()
     assert output == expected_output
 
@@ -328,7 +328,7 @@ def test_053_override_default_mark():
             result = super().render_prefix(span, marker, context)
             return result.replace('<a href', '<a class=\"mahlink\" href')
 
-    sbr = SanityBlockRenderer(input_blocks, custom_marker_definitions={'mark1': CustomLinkMark})
+    sbr = PortableTextRenderer(input_blocks, custom_marker_definitions={'mark1': CustomLinkMark})
     output = sbr.render()
     assert output == expected_output
 
