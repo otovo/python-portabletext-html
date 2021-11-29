@@ -1,5 +1,5 @@
 [![pypi](https://img.shields.io/pypi/v/portabletext-html.svg)](https://pypi.org/project/portabletext-html/)
-[![test](https://github.com/otovo/python-portabletext-html/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/otovo/python-portabletext-html/actions/workflows/test.yml)
+[![test](https://github.com/otovo/python-portabletext-html/actions/workflows/test.yml/badge.svg)](https://github.com/otovo/python-portabletext-html/actions/workflows/test.yml)
 [![code coverage](https://codecov.io/gh/otovo/python-portabletext-html/branch/main/graph/badge.svg)](https://codecov.io/gh/otovo/python-portabletext-html)
 [![supported python versions](https://img.shields.io/badge/python-3.7%2B-blue)](https://pypi.org/project/python-portabletext-html/)
 
