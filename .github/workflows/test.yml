@@ -18,7 +18,7 @@ jobs:
         id: cache-venv
         with:
           path: .venv
-          key: venv-0
+          key: venv-1
       - run: |
           python -m venv .venv --upgrade-deps
           source .venv/bin/activate
@@ -28,7 +28,7 @@ jobs:
         id: pre-commit-cache
         with:
           path: ~/.cache/pre-commit
-          key: key-0
+          key: key-1
       - run: |
           source .venv/bin/activate
           pre-commit run --all-files
@@ -48,7 +48,7 @@ jobs:
         id: poetry-cache
         with:
           path: ~/.local
-          key: key-1
+          key: key-2
       - uses: snok/install-poetry@v1
         with:
           virtualenvs-create: false
@@ -56,7 +56,7 @@ jobs:
         id: cache-venv
         with:
           path: .venv
-          key: ${{ hashFiles('**/poetry.lock') }}-0
+          key: ${{ hashFiles('**/poetry.lock') }}-1
       - run: |
           python -m venv .venv
           source .venv/bin/activate
