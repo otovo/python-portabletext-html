@@ -1,15 +1,7 @@
-<a href="https://pypi.org/project/sanity-html/">
-    <img src="https://img.shields.io/pypi/v/sanity-html.svg" alt="Package version">
-</a>
-<a href="https://codecov.io/gh/otovo/python-sanity-html">
-    <img src="https://codecov.io/gh/otovo/python-sanity-html/branch/main/graph/badge.svg" alt="Code coverage">
-</a>
-<a href="https://pypi.org/project/python-sanity-html/">
-    <img src="https://img.shields.io/badge/python-3.7%2B-blue" alt="Supported Python versions">
-</a>
-<a href="http://mypy-lang.org/">
-    <img src="http://www.mypy-lang.org/static/mypy_badge.svg" alt="Checked with mypy">
-</a>
+[![pypi](https://img.shields.io/pypi/v/portabletext-html.svg)](https://pypi.org/project/portabletext-html/)
+[![test](https://github.com/otovo/python-portabletext-html/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/otovo/python-portabletext-html/actions/workflows/test.yml)
+[![code coverage](https://codecov.io/gh/otovo/python-portabletext-html/branch/main/graph/badge.svg)](https://codecov.io/gh/otovo/python-portabletext-html)
+[![supported python versions](https://img.shields.io/badge/python-3.7%2B-blue)](https://pypi.org/project/python-portabletext-html/)
 
 # Portable Text HTML Renderer for Python
 
@@ -223,4 +215,4 @@ In the meantime, users should be able to serialize image types by passing a cust
 
 Contributions are always appreciated 👏
 
-For details, see the [CONTRIBUTING.md](https://github.com/otovo/python-sanity-html/blob/main/CONTRIBUTING.md).
+For details, see the [CONTRIBUTING.md](https://github.com/otovo/python-portabletext-html/blob/main/CONTRIBUTING.md).
