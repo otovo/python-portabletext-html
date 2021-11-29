@@ -2,7 +2,7 @@ import html
 import json
 from pathlib import Path
 
-from sanity_html.renderer import render
+from portabletext_html.renderer import render
 
 
 def load_fixture(fixture_name) -> dict:

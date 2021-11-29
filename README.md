@@ -11,7 +11,7 @@
     <img src="http://www.mypy-lang.org/static/mypy_badge.svg" alt="Checked with mypy">
 </a>
 
-# Sanity HTML Renderer for Python
+# Portable Text HTML Renderer for Python
 
 This package generates HTML from [Portable Text](https://github.com/portabletext/portabletext).
 
@@ -20,19 +20,19 @@ For the most part, it mirrors [Sanity's](https://www.sanity.io/) own [block-cont
 ## Installation
 
 ```
-pip install sanity-html
+pip install portabletext-html
 ```
 
 ## Usage
 
-Instantiate the `SanityBlockRenderer` class with your content and call the `render` method.
+Instantiate the `PortableTextRenderer` class with your content and call the `render` method.
 
 The following content
 
 ```python
-from sanity_html import SanityBlockRenderer
+from portabletext_html import PortableTextRenderer
 
-renderer = SanityBlockRenderer({
+renderer = PortableTextRenderer({
     "_key": "R5FvMrjo",
     "_type": "block",
     "children": [
@@ -64,26 +64,26 @@ would like to.
 To illustrate, if you passed this data to the renderer class:
 
 ```python
-from sanity_html import SanityBlockRenderer
+from portabletext_html import PortableTextRenderer
 
-renderer = SanityBlockRenderer({
-  "_type": "block",
-  "_key": "foo",
-  "style": "normal",
-  "children": [
-    {
-      "_type": "span",
-      "text": "Press, "
-    },
-    {
-      "_type": "button",
-      "text": "here"
-    },
-    {
-      "_type": "span",
-      "text": ", now!"
-    }
-  ]
+renderer = PortableTextRenderer({
+    "_type": "block",
+    "_key": "foo",
+    "style": "normal",
+    "children": [
+        {
+            "_type": "span",
+            "text": "Press, "
+        },
+        {
+            "_type": "button",
+            "text": "here"
+        },
+        {
+            "_type": "span",
+            "text": ", now!"
+        }
+    ]
 })
 renderer.render()
 ```
@@ -94,12 +94,14 @@ does not have a corresponding built-in type serializer by default.
 To render this text you must provide your own serializer, like this:
 
 ```python
-from sanity_html import SanityBlockRenderer
+from portabletext_html import PortableTextRenderer
+
 
 def button_serializer(node: dict, context: Optional[Block], list_item: bool):
     return f'<button>{node["text"]}</button>'
 
-renderer = SanityBlockRenderer(
+
+renderer = PortableTextRenderer(
     ...,
     custom_serializers={'button': button_serializer}
 )
@@ -136,9 +138,9 @@ Like with custom type serializers, additional serializers for
 marker definitions and styles can be passed in like this:
 
 ```python
-from sanity_html import SanityBlockRenderer
+from portabletext_html import PortableTextRenderer
 
-renderer = SanityBlockRenderer(
+renderer = PortableTextRenderer(
     ...,
     custom_marker_definitions={'em': ComicSansEmphasis}
 )
@@ -152,7 +154,7 @@ Here's an example of a custom style, adding an extra font
 to the built-in equivalent serializer:
 
 ```python
-from sanity_html.marker_definitions import MarkerDefinition
+from portabletext_html.marker_definitions import MarkerDefinition
 
 
 class ComicSansEmphasis(MarkerDefinition):
@@ -178,8 +180,9 @@ Since the `render_suffix` and `render` methods here are actually identical to th
 they do not need to be specified, and the whole example can be reduced to:
 
 ```python
-from sanity_html.marker_definitions import MarkerDefinition  # base
-from sanity_html import SanityBlockRenderer
+from portabletext_html.marker_definitions import MarkerDefinition  # base
+from portabletext_html import PortableTextRenderer
+
 
 class ComicSansEmphasis(MarkerDefinition):
     tag = 'em'
@@ -189,7 +192,7 @@ class ComicSansEmphasis(MarkerDefinition):
         return f'<{cls.tag} style="font-family: "Comic Sans MS", "Comic Sans", cursive;">'
 
 
-renderer = SanityBlockRenderer(
+renderer = PortableTextRenderer(
     ...,
     custom_marker_definitions={'em': ComicSansEmphasis}
 )

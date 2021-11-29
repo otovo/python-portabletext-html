@@ -6,7 +6,7 @@ The rest of the code gets the logger through this module rather than
 """
 import logging
 
-logger = logging.getLogger('sanity_html')
+logger = logging.getLogger('portabletext_html')
 
 if not logger.handlers:  # pragma: no cover
     logger.setLevel(logging.WARNING)

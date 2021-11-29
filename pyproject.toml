@@ -1,5 +1,5 @@
 [tool.poetry]
-name = 'sanity-html'
+name = 'portabletext-html'
 version = '1.0.0'
 description = "HTML renderer for Sanity's Portable Text format"
 homepage = 'https://github.com/otovo/python-sanity-html'
@@ -10,7 +10,7 @@ license = 'Apache2'
 readme = 'README.md'
 keywords = ['sanity', 'portable', 'text', 'html', 'parsing']
 include = ['CHANGELOG.md']
-packages = [{ include = 'sanity_html' }]
+packages = [{ include = 'portabletext_html' }]
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
@@ -21,6 +21,8 @@ classifiers = [
     'Topic :: Text Processing :: Markup',
     'Topic :: Text Processing :: Markup :: HTML',
     'Programming Language :: Python',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Typing :: Typed',
@@ -51,11 +53,11 @@ include_trailing_comma = true
 line_length = 120
 
 [tool.pytest.ini_options]
-addopts = ['--cov=sanity_html','--cov-report', 'term-missing']
+addopts = ['--cov=portabletext_html','--cov-report', 'term-missing']
 markers = ['unsupported']
 
 [tool.coverage.run]
-source = ['sanity_html/*']
+source = ['portabletext_html/*']
 omit = []
 branch = true
 

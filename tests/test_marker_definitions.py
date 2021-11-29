@@ -1,5 +1,5 @@
-from sanity_html import SanityBlockRenderer
-from sanity_html.marker_definitions import (
+from portabletext_html import PortableTextRenderer
+from portabletext_html.marker_definitions import (
     CommentMarkerDefinition,
     EmphasisMarkerDefinition,
     LinkMarkerDefinition,
@@ -7,7 +7,7 @@ from sanity_html.marker_definitions import (
     StrongMarkerDefinition,
     UnderlineMarkerDefinition,
 )
-from sanity_html.types import Block, Span
+from portabletext_html.types import Block, Span
 
 sample_texts = ['test', None, 1, 2.2, '!"#$%&/()']
 
@@ -60,7 +60,7 @@ def test_render_comment_marker_success():
 
 
 def test_custom_marker_definition():
-    from sanity_html.marker_definitions import MarkerDefinition
+    from portabletext_html.marker_definitions import MarkerDefinition
 
     class ComicSansEmphasis(MarkerDefinition):
         tag = 'em'
@@ -69,7 +69,7 @@ def test_custom_marker_definition():
         def render_prefix(cls, span, marker, context):
             return f'<{cls.tag} style="font-family: "Comic Sans MS", "Comic Sans", cursive;">'
 
-    renderer = SanityBlockRenderer(
+    renderer = PortableTextRenderer(
         {
             '_type': 'block',
             'children': [{'_key': 'a1ph4', '_type': 'span', 'marks': ['em'], 'text': 'Sanity'}],

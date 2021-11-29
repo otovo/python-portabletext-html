@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sanity_html.logger import logger
+from portabletext_html.logger import logger
 
 if TYPE_CHECKING:
     from typing import Type
 
-    from sanity_html.types import Block, Span
+    from portabletext_html.types import Block, Span
 
 
 class MarkerDefinition:
