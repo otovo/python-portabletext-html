@@ -10,7 +10,7 @@ from portabletext_html.types import Block, Span
 from portabletext_html.utils import get_list_tags, is_block, is_list, is_span
 
 if TYPE_CHECKING:
-    from typing import Callable, Dict, List, Optional, Type, Union
+    from typing import Any, Callable, Dict, List, Optional, Type, Union
 
     from portabletext_html.marker_definitions import MarkerDefinition
 
@@ -244,7 +244,7 @@ class PortableTextRenderer:
         }
 
 
-def render(blocks: List[Dict], *args, **kwargs) -> str:
+def render(blocks: List[Dict], *args: Any, **kwargs: Any) -> str:
     """Shortcut function inspired by Sanity's own blocksToHtml.h callable."""
     renderer = PortableTextRenderer(blocks, *args, **kwargs)
     return renderer.render()
