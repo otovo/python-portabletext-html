@@ -86,11 +86,10 @@ class Block:
         except ValueError:
             return None, None
 
-        prev_node = None
         next_node = None
 
-        if node_idx != 0:
-            prev_node = self.children[node_idx - 1]
+        prev_node = self.children[node_idx - 1] if node_idx != 0 else None
+
         if node_idx != len(self.children) - 1:
             next_node = self.children[node_idx + 1]
 
