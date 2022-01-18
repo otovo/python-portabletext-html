@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 from portabletext_html.utils import get_default_marker_definitions
 
@@ -74,10 +74,8 @@ class Block:
             return None, None
         try:
             if type(node) == dict:
-                node = cast(dict, node)
                 node_idx = self.children.index(node)
             elif type(node) == Span:
-                node = cast(Span, node)
                 for index, item in enumerate(self.children):
                     if 'text' in item and node.text == item['text']:
                         # Is it possible to handle several identical texts?
