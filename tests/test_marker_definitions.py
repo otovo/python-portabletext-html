@@ -72,7 +72,7 @@ def test_custom_marker_definition():
             marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
             condition = marker_definition.get('cloudCondition', '')
             if not condition:
-                style = "display: none"
+                style = 'display: none'
                 return f'<{cls.tag} style=\"{style}\">'
             else:
                 return super().render_prefix(span, marker, context)
@@ -81,7 +81,7 @@ def test_custom_marker_definition():
         {
             '_type': 'block',
             'children': [{'_key': 'a1ph4', '_type': 'span', 'marks': ['some_id'], 'text': 'Sanity'}],
-            'markDefs': [{"_key": "some_id", "_type": "contractConditional", "cloudCondition": False}],
+            'markDefs': [{'_key': 'some_id', '_type': 'contractConditional', 'cloudCondition': False}],
         },
         custom_marker_definitions={'contractConditional': ConditionalMarkerDefinition},
     )
