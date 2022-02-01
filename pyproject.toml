@@ -1,6 +1,6 @@
 [tool.poetry]
 name = 'portabletext-html'
-version = '1.0.0'
+version = '1.0.1'
 description = "HTML renderer for Sanity's Portable Text format"
 homepage = 'https://github.com/otovo/python-sanity-html'
 repository = 'https://github.com/otovo/python-sanity-html'
