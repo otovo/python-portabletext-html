@@ -1,3 +1,5 @@
+from typing import Type
+
 from portabletext_html import PortableTextRenderer
 from portabletext_html.marker_definitions import (
     CommentMarkerDefinition,
@@ -62,19 +64,24 @@ def test_render_comment_marker_success():
 def test_custom_marker_definition():
     from portabletext_html.marker_definitions import MarkerDefinition
 
-    class ComicSansEmphasis(MarkerDefinition):
+    class ConditionalMarkerDefinition(MarkerDefinition):
         tag = 'em'
 
         @classmethod
-        def render_prefix(cls, span, marker, context):
-            return f'<{cls.tag} style="font-family: "Comic Sans MS", "Comic Sans", cursive;">'
+        def render_prefix(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
+            marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
+            if condition := marker_definition.get('cloudCondition', ''):
+                return super().render_prefix(span, marker, context)
+            else:
+                return f'<{cls.tag} style="display: none">'
 
     renderer = PortableTextRenderer(
         {
             '_type': 'block',
-            'children': [{'_key': 'a1ph4', '_type': 'span', 'marks': ['em'], 'text': 'Sanity'}],
-            'markDefs': [],
+            'children': [{'_key': 'a1ph4', '_type': 'span', 'marks': ['some_id'], 'text': 'Sanity'}],
+            'markDefs': [{'_key': 'some_id', '_type': 'contractConditional', 'cloudCondition': False}],
         },
-        custom_marker_definitions={'em': ComicSansEmphasis},
+        custom_marker_definitions={'contractConditional': ConditionalMarkerDefinition},
     )
-    assert renderer.render() == '<p><em style="font-family: "Comic Sans MS", "Comic Sans", cursive;">Sanity</em></p>'
+    result = renderer.render()
+    assert result == '<p><em style="display: none">Sanity</em></p>'
