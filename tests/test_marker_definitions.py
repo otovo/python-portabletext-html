@@ -11,7 +11,7 @@ from portabletext_html.marker_definitions import (
 )
 from portabletext_html.types import Block, Span
 
-sample_texts = ['test', None, 1, 2.2, '!"#$%/()']
+sample_texts = ['test', None, 1, 2.2, '!"#$%&/()']
 
 
 def test_render_emphasis_marker_success():
@@ -70,12 +70,10 @@ def test_custom_marker_definition():
         @classmethod
         def render_prefix(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
             marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
-            condition = marker_definition.get('cloudCondition', '')
-            if not condition:
-                style = 'display: none'
-                return f'<{cls.tag} style=\"{style}\">'
-            else:
+            if condition := marker_definition.get('cloudCondition', ''):
                 return super().render_prefix(span, marker, context)
+            else:
+                return f'<{cls.tag} style="display: none">'
 
     renderer = PortableTextRenderer(
         {
