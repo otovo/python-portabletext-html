@@ -161,6 +161,11 @@ class ComicSansEmphasis(MarkerDefinition):
         return f'</{cls.tag}>'
 
     @classmethod
+    def render_text(cls, span: Span, marker: str, context: Block) -> str:
+        # custom rendering logic can be placed here
+        return str(span.text)
+
+    @classmethod
     def render(cls, span: Span, marker: str, context: Block) -> str:
         result = cls.render_prefix(span, marker, context)
         result += str(span.text)
