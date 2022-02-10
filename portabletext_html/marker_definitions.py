@@ -37,9 +37,14 @@ class MarkerDefinition:
     def render(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
         """Render the marked span directly with prefix and suffix."""
         result = cls.render_prefix(span, marker, context)
-        result += str(span.text)
+        result += cls.render_text(span, marker, context)
         result += cls.render_suffix(span, marker, context)
         return result
+
+    @classmethod
+    def render_text(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
+        """Render the content part for a marked span."""
+        return str(span.text)
 
 
 # Decorators
