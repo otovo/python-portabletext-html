@@ -77,17 +77,16 @@ def test_custom_marker_definition():
         def render_prefix(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
             marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
             condition = marker_definition.get('cloudCondition', '')
-            if not condition:
-                style = 'display: none'
-                return f'<{cls.tag} style=\"{style}\">'
-            else:
+            if condition:
                 return super().render_prefix(span, marker, context)
+            style = 'display: none'
+            return f'<{cls.tag} style=\"{style}\">'
 
         @classmethod
         def render_text(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
             marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
             condition = marker_definition.get('cloudCondition', '')
-            return span.text if not condition else ''
+            return '' if condition else span.text
 
     renderer = PortableTextRenderer(
         blocks={

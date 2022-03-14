@@ -208,8 +208,11 @@ class PortableTextRenderer:
                 continue
 
             if node.get('level') < current_list['level']:
-                parent = self._find_list(tree[-1], level=node.get('level'), list_item=node.get('listItem'))
-                if parent:
+                if parent := self._find_list(
+                    tree[-1],
+                    level=node.get('level'),
+                    list_item=node.get('listItem'),
+                ):
                     current_list = parent
                     current_list['children'].append(node)
                     continue
@@ -240,8 +243,7 @@ class PortableTextRenderer:
         ):
             return root_node
 
-        children = root_node.get('children')
-        if children:
+        if children := root_node.get('children'):
             return self._find_list(children[-1], level, list_item)
 
         return None
