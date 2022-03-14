@@ -83,8 +83,14 @@ def test_custom_marker_definition():
             else:
                 return super().render_prefix(span, marker, context)
 
+        @classmethod
+        def render_text(cls: Type[MarkerDefinition], span: Span, marker: str, context: Block) -> str:
+            marker_definition = next((md for md in context.markDefs if md['_key'] == marker), None)
+            condition = marker_definition.get('cloudCondition', '')
+            return span.text if not condition else ''
+
     renderer = PortableTextRenderer(
-        {
+        blocks={
             '_type': 'block',
             'children': [{'_key': 'a1ph4', '_type': 'span', 'marks': ['some_id'], 'text': 'Sanity'}],
             'markDefs': [{'_key': 'some_id', '_type': 'contractConditional', 'cloudCondition': False}],

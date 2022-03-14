@@ -73,7 +73,7 @@ class Block:
             if definition['_type'] in self.marker_definitions:
                 marker = self.marker_definitions[definition['_type']]
                 marker_definitions[definition['_key']] = marker
-                del marker_definitions[definition['_type']]
+                # del marker_definitions[definition['_type']]
         return marker_definitions
 
     def get_node_siblings(self, node: Union[dict, Span]) -> Tuple[Optional[dict], Optional[dict]]:

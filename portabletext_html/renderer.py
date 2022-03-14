@@ -150,7 +150,19 @@ class PortableTextRenderer:
             marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
             result += marker_callable.render_prefix(span, mark, block)
 
-        result += html.escape(span.text).replace('\n', '<br/>')
+        # to avoid rendering the text multiple times,
+        # only the first custom mark will be used
+        custom_mark_text_rendered = False
+        if sorted_marks:
+            for mark in sorted_marks:
+                if custom_mark_text_rendered or mark in prev_marks:
+                    continue
+                marker_callable = block.marker_definitions.get(mark, DefaultMarkerDefinition)()
+                result += marker_callable.render_text(span, mark, block)
+                custom_mark_text_rendered = True
+
+        if not custom_mark_text_rendered:
+            result += html.escape(span.text).replace('\n', '<br/>')
 
         for mark in reversed(sorted_marks):
             if mark in next_marks:
