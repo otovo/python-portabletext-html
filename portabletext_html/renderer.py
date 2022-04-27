@@ -113,7 +113,7 @@ class PortableTextRenderer:
             return self._custom_serializers.get(node.get('_type', ''))(node, context, list_item)  # type: ignore
 
         else:
-            if hasattr(node, '_type'):
+            if '_type' in node:
                 raise MissingSerializerError(
                     f'Found unhandled node type: {node["_type"]}. ' 'Most likely this requires a custom serializer.'
                 )

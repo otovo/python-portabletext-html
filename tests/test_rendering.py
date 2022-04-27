@@ -2,7 +2,9 @@ import html
 import json
 from pathlib import Path
 
-from portabletext_html.renderer import render
+import pytest
+
+from portabletext_html.renderer import MissingSerializerError, UnhandledNodeError, render
 
 
 def load_fixture(fixture_name) -> dict:
@@ -45,3 +47,15 @@ def test_nested_marks():
     fixture = load_fixture('nested_marks.json')
     output = render(fixture)
     assert output == '<p><strong>A word of <em>warning;</em></strong> Sanity is addictive.</p>'
+
+
+def test_missing_serializer():
+    fixture = load_fixture('invalid_type.json')
+    with pytest.raises(MissingSerializerError):
+        render(fixture)
+
+
+def test_invalid_node():
+    fixture = load_fixture('invalid_node.json')
+    with pytest.raises(UnhandledNodeError):
+        render(fixture)
