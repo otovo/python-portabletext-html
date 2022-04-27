@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/ambv/black
-    rev: 21.12b0
+    rev: 22.3.0
     hooks:
       - id: black
         args: [ "--quiet" ]
@@ -19,7 +19,7 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.2
+    rev: 4.0.1
     hooks:
       - id: flake8
         additional_dependencies: [
@@ -33,6 +33,9 @@ repos:
             'flake8-annotations',
             'flake8-printf-formatting',
             'flake8-type-checking',
+        ]
+        args: [
+          '--allow-star-arg-any'
         ]
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.31.0
