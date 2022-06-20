@@ -1,10 +1,18 @@
 import html
 import json
 from pathlib import Path
+from typing import Optional
 
 import pytest
 
 from portabletext_html.renderer import MissingSerializerError, UnhandledNodeError, render
+from portabletext_html.types import Block
+
+
+def extraInfoSerializer(node: dict, context: Optional[Block], list_item: bool) -> str:
+    extraInfo = node.get('extraInfo')
+
+    return f'<p>{extraInfo}</p>'
 
 
 def load_fixture(fixture_name) -> dict:
@@ -59,3 +67,10 @@ def test_invalid_node():
     fixture = load_fixture('invalid_node.json')
     with pytest.raises(UnhandledNodeError):
         render(fixture)
+
+
+def test_custom_serializer_node_after_list():
+    fixture = load_fixture('custom_serializer_node_after_list.json')
+    output = render(fixture, custom_serializers={'extraInfoBlock': extraInfoSerializer})
+
+    assert output == '<div><ul><li>resers</li></ul><p>This informations is not supported by Block</p></div>'
