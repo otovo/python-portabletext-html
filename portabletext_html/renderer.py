@@ -66,7 +66,7 @@ class PortableTextRenderer:
 
             if list_nodes and not is_list(node):
                 tree = self._normalize_list_tree(list_nodes)
-                result += ''.join([self._render_node(n, Block(**node), list_item=True) for n in tree])
+                result += ''.join([self._render_node(n, list_item=True) for n in tree])
                 list_nodes = []  # reset list_nodes
 
             if is_list(node):
