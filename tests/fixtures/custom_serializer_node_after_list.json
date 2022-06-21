@@ -1,0 +1,20 @@
+[
+  {
+    "_key": "e5b6e416e6e9",
+    "_type": "block",
+    "children": [
+      { "_key": "3bbbff0f158b", "_type": "span", "marks": [], "text": "resers" }
+    ],
+    "level": 1,
+    "listItem": "bullet",
+    "markDefs": [],
+    "style": "normal"
+  },
+  {
+    "_key": "73405dda68e0",
+    "_type": "extraInfoBlock",
+    "extraInfo": "This informations is not supported by Block",
+    "markDefs": [],
+    "style": "normal"
+  }
+]
