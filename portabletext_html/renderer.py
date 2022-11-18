@@ -38,8 +38,8 @@ class PortableTextRenderer:
     def __init__(
         self,
         blocks: Union[list[dict], dict],
-        custom_marker_definitions: dict[str, Type[MarkerDefinition]] = None,
-        custom_serializers: dict[str, Callable[[dict, Optional[Block], bool], str]] = None,
+        custom_marker_definitions: dict[str, Type[MarkerDefinition]] | None = None,
+        custom_serializers: dict[str, Callable[[dict, Optional[Block], bool], str]] | None = None,
     ) -> None:
         logger.debug('Initializing block renderer')
         self._wrapper_element: Optional[str] = None
@@ -106,7 +106,7 @@ class PortableTextRenderer:
         elif is_span(node):
             logger.debug('Rendering node as span')
             span = Span(**node)
-            context = cast(Block, context)  # context should always be a Block here
+            context = cast('Block', context)  # context should always be a Block here
             return self._render_span(span, block=context)
 
         elif self._custom_serializers.get(node.get('_type', '')):
